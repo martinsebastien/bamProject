@@ -10,6 +10,7 @@ class ItemsTableSchema extends Schema {
       table.string('name')
       table.integer('number')
       table.text('comment', 'mediumtext')
+      table.string('matter')
       table.timestamps()
     })
   }
