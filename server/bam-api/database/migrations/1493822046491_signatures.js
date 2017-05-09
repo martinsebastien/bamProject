@@ -7,7 +7,7 @@ class SignaturesTableSchema extends Schema {
   up () {
     this.create('signatures', (table) => {
       table.increments()
-      table.string('image')
+      table.text('image', 'longtext').notNullable()
       table.timestamps()
     })
   }

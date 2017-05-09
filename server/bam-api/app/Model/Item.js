@@ -11,6 +11,10 @@ class Item extends Lucid {
     statu() {
         return this.belongsTo('App/Model/Statu')
     }
+
+    pictures() {
+        return this.hasMany('App/Model/Picture')
+    }
 }
 
 module.exports = Item

@@ -7,7 +7,7 @@ class StreetsTableSchema extends Schema {
   up () {
     this.create('streets', (table) => {
       table.increments()
-      table.string('name')
+      table.string('name').notNullable()
       table.timestamps()
     })
   }

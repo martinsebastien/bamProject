@@ -5,7 +5,11 @@ const Lucid = use('Lucid')
 class Address extends Lucid {
 
     users() {
-        return this.hasmany('App/Model/User')
+        return this.hasMany('App/Model/User')
+    }
+
+    buildings() {
+        return this.hasMany('App/Model/Building')
     }
 
     street() {

@@ -7,8 +7,8 @@ class EnergiesTableSchema extends Schema {
   up () {
     this.create('energy', (table) => {
       table.increments()
-      table.string('name')
-      table.string('metric')
+      table.string('name').notNullable()
+      table.string('metric').nullable()
       table.timestamps()
     })
   }

@@ -7,10 +7,11 @@ class ItemsTableSchema extends Schema {
   up () {
     this.create('items', (table) => {
       table.increments()
-      table.string('name')
-      table.integer('number')
-      table.text('comment', 'mediumtext')
-      table.string('matter')
+      table.string('name').notNullable()
+      table.integer('number').nullable()
+      table.text('comment', 'mediumtext').nullable()
+      table.string('matter').nullable()
+      table.softDeletes()
       table.timestamps()
     })
   }

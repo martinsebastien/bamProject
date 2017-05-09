@@ -7,8 +7,8 @@ class AddressesTableSchema extends Schema {
   up () {
     this.create('addresses', (table) => {
       table.increments()
-      table.string('number')
-      table.string('line')
+      table.string('number').nullable()
+      table.string('line').nullable()
       table.timestamps()
     })
   }

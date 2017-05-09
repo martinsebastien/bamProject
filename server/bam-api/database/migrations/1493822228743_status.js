@@ -7,7 +7,7 @@ class StatusTableSchema extends Schema {
   up () {
     this.create('status', (table) => {
       table.increments()
-      table.string('name')
+      table.string('name').notNullable()
       table.timestamps()
     })
   }

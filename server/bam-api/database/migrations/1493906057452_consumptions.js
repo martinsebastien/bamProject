@@ -7,8 +7,8 @@ class ConsumptionsTableSchema extends Schema {
   up () {
     this.create('consumptions', (table) => {
       table.increments()
-      table.integer('number')
-      table.integer('value')
+      table.integer('number').nullable()
+      table.integer('value').nullable()
       table.timestamps()
     })
   }

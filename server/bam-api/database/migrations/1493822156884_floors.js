@@ -7,7 +7,7 @@ class FloorsTableSchema extends Schema {
   up () {
     this.create('floors', (table) => {
       table.increments()
-      table.string('number')
+      table.string('number').notNullable()
       table.timestamps()
     })
   }

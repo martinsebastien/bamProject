@@ -4,7 +4,7 @@ const Lucid = use('Lucid')
 
 class Signature extends Lucid {
 
-    users() {
+    user() {
         return this.belongsTo('App/Model/User')
     }
 

@@ -7,7 +7,7 @@ class LotsTableSchema extends Schema {
   up () {
     this.create('lots', (table) => {
       table.increments()
-      table.string('number')
+      table.string('number').nullable()
       table.timestamps()
     })
   }

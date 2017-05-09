@@ -11,6 +11,10 @@ class Form extends Lucid {
     city() {
         return this.belongsTo('App/Model/City')
     }
+
+    contracts() {
+        return this.hasMany('App/Model/Contract')
+    }
 }
 
 module.exports = Form

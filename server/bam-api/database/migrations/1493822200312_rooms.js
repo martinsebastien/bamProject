@@ -7,8 +7,8 @@ class RoomsTableSchema extends Schema {
   up () {
     this.create('rooms', (table) => {
       table.increments()
-      table.string('name')
-      table.string('number')
+      table.string('name').notNullable()
+      table.string('number').nullable()
       table.timestamps()
     })
   }
