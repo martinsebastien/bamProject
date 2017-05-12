@@ -19,4 +19,4 @@ const Route = use('Route')
 
 Route.on('/').render('welcome')
 
-Route.get('/forms', 'FormsController.index')
+Route.resource('forms', 'FormsController')

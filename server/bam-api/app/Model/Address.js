@@ -13,7 +13,19 @@ class Address extends Lucid {
     }
 
     street() {
-        return this.belongsTo('App/Model/Book')
+        return this.belongsTo('App/Model/Street')
+    }
+
+    city() {
+        return this.street().city()
+    }
+
+    province() {
+        return this.street().city().province()
+    }
+
+    country() {
+        return this.street().city().province().country()
     }
 }
 

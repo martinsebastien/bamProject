@@ -12,6 +12,10 @@ class Form extends Lucid {
         return this.belongsTo('App/Model/City')
     }
 
+    gender() {
+        return this.belongsTo('App/Model/Gender')
+    }
+
     contracts() {
         return this.hasMany('App/Model/Contract')
     }

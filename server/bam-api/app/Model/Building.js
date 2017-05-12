@@ -9,7 +9,7 @@ class Building extends Lucid {
     }
 
     user() {
-        return this.belongsTo('App/Model/Address')
+        return this.belongsTo('App/Model/User')
     }
 
     floors() {

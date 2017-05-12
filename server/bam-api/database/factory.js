@@ -6,6 +6,7 @@ const rooms = ['Salle de bain', 'Cuisine', 'Chambre', 'Salon']
 const items = ['Sonnette', 'Clés', 'Prises', 'Mure', 'Sol', 'Peintures', 'Plinthes']
 const matters = ['Bois', 'Métal', 'Plâtre']
 const status = ['En ordre', 'Usé', 'Détérioré']
+const gender = ['Etat des lieux: Entrée', 'Etat des lieux: Sortie']
 
 Factory.blueprint('App/Model/Country', (fake) => {
   return {
@@ -145,6 +146,12 @@ Factory.blueprint('App/Model/Contract', (fake) => {
 Factory.blueprint('App/Model/Statu', (fake) => {
   return {
     name: status[fake.natural({min: 0, max: 2})]
+  }
+})
+
+Factory.blueprint('App/Model/Gender', (fake) => {
+  return {
+    name: gender[fake.natural({min: 0, max: 1})]
   }
 })
 

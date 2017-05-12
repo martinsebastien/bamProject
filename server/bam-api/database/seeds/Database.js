@@ -26,10 +26,12 @@ class DatabaseSeeder {
     const proprio = Factory.model('App/Model/User').make()
     const type = Factory.model('App/Model/Type').make()
     const statu = Factory.model('App/Model/Statu').make()
+    const gender = Factory.model('App/Model/Gender').make()
 
     yield type.save()
     yield proprio.save()
     yield statu.save()
+    yield gender.save()
 
     users.each(function * (user) {
       const address = Factory.model('App/Model/Address').make()
@@ -96,7 +98,7 @@ class DatabaseSeeder {
       yield form.contracts().save(contract)
       yield form.signatures().save(signature)
       yield user.signatures().save(signature)
-
+      yield gender.forms().save(form)
       yield proprio.buildings().save(building)
       yield building.floors().save(floor)
       yield lot.consumptions().save(consumption)

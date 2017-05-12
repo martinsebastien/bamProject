@@ -2,6 +2,7 @@
 
 const Env = use('Env')
 const Youch = use('youch')
+const Database = use('Database')
 const Http = exports = module.exports = {}
 
 /**
@@ -38,4 +39,6 @@ Http.handleError = function * (error, request, response) {
  * starting http server.
  */
 Http.onStart = function () {
+  //Database.on('query', console.log)
+  //Database.on('sql', console.log)
 }
