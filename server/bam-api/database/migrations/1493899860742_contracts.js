@@ -7,6 +7,7 @@ class ContractsTableSchema extends Schema {
   up () {
     this.create('contracts', (table) => {
       table.increments()
+      table.string('reference_number').nullable()
       table.softDeletes()
       table.timestamps()
     })

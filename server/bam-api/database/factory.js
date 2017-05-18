@@ -76,9 +76,9 @@ Factory.blueprint('App/Model/Signature', (fake) => {
 
 Factory.blueprint('App/Model/Form', (fake) => {
   return {
-    reference_number: fake.string(),
     date_signature: fake.date(),
-    date: fake.date()
+    date: fake.date(),
+    completed: true
   }
 })
 
@@ -139,7 +139,7 @@ Factory.blueprint('App/Model/Item', (fake) => {
 
 Factory.blueprint('App/Model/Contract', (fake) => {
   return {
-
+    reference_number: fake.string(),
   }
 })
 

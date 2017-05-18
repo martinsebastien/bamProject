@@ -9,7 +9,7 @@ class Contract extends Lucid {
     }
 
     form() {
-        return this.belongsTo('App/Model/User')
+        return this.belongsTo('App/Model/Form')
     }
 
     lot() {

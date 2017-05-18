@@ -1,0 +1,32 @@
+page-home {
+    .detailsAddress {
+        font-style: italic;
+        font-size: 0.7em;
+    }
+
+    ion-fab-list {
+        right: 0px;
+    }
+
+    .customMenu {
+        background-color: white;
+        width: 100%;
+        display: block;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    .searchbar-ios {
+        background: #6200EA;
+    }
+
+    .item-inner {
+        margin-right: 16px;
+        padding-right: 0px;
+    }
+
+    .address {
+        color: rgba(0,0,0,0.7) !important;
+    }
+
+}

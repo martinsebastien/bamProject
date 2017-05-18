@@ -1,0 +1,50 @@
+<ion-header>
+  <ion-navbar color="primary">
+    <ion-title>
+      Tout les états des lieux
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-searchbar></ion-searchbar>
+
+  <ion-list>
+      <ion-item-sliding>
+        <ion-item>
+          <h2>Finn Ronald</h2>
+          <p class="detailsAddress">Etage 1 - Appartement 16</p>
+          <p class="address">Chemin de la Faucille 22</p>
+          <p class="address">1200 Genève</p>
+        </ion-item>
+        <ion-item-options side="right">
+          <button ion-button color="primary">
+          <ion-icon name="text"></ion-icon>
+          Consulter
+        </button>
+          <button ion-button color="primary">
+          <ion-icon name="mail"></ion-icon>
+          Email
+        </button>
+          <button ion-button color="tertiary">
+          <ion-icon name="call"></ion-icon>
+          Appeler
+        </button>
+        </ion-item-options>
+      </ion-item-sliding>
+
+  </ion-list>
+
+
+  <ion-fab right bottom>
+    <button ion-fab color="secondary">
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-fab-list side="top">
+      <button ion-button outline color="secondary" class="customMenu">Synchroniser</button>
+      <button ion-button outline color="secondary" class="customMenu">Compléter</button>
+      <button ion-button outline color="secondary" class="customMenu">Nouveau</button>
+    </ion-fab-list>
+
+  </ion-fab>
+</ion-content>

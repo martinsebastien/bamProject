@@ -20,10 +20,35 @@ class FormsController {
 
     * index(request, response) {
 
-        const allState = yield Database
-            .table('users')
-            .innerJoin('contracts', 'users.id', 'contracts.user_id')
-            .orderBy('users.name')
+        // accept a param: completed. Note that the param is a boolean in string format. Should do completed == 'true' to test value
+        const completed = request.all().completed
+        let allState
+
+        if (!completed) {
+            allState = yield Database
+                .table('users')
+                .innerJoin('contracts', 'users.id', 'contracts.user_id')
+                .groupBy('contracts.reference_number')
+                .orderBy('users.name')
+        }
+
+        if (completed == 'true') {
+            allState = yield Database
+                .table('users')
+                .innerJoin('contracts', 'users.id', 'contracts.user_id')
+                .innerJoin('forms', 'forms.id', 'contracts.form_id')
+                .where('completed', true)
+                .groupBy('contracts.reference_number')
+                .orderBy('users.name')
+        } else {
+            allState = yield Database
+                .table('users')
+                .innerJoin('contracts', 'users.id', 'contracts.user_id')
+                .innerJoin('forms', 'forms.id', 'contracts.form_id')
+                .where('completed', false)
+                .groupBy('contracts.reference_number')
+                .orderBy('users.name')
+        }
 
         yield response
             .json(allState)
@@ -32,10 +57,12 @@ class FormsController {
 
     * show(request, response) {
         //We receive an id form from the request
+        //We send a JSON parsed to be easily used from the frontend (no need to map it)
 
         const state = {}
         const _id = parseInt(request.params().id)
         const form = yield Form.find(_id)
+        const contract = yield Contract.find(form.id)
         const genderForm = yield Gender.find(form.gender_id)
         const lots = yield Database
             .select('*')
@@ -44,7 +71,7 @@ class FormsController {
             .where('contracts.form_id', _id)
 
         state.general = {}
-        state.general.reference = form.reference_number
+        state.general.reference_number = contract.reference_number
         state.general.date = form.date
         state.general.gender = genderForm.name
         state.users = yield Database
@@ -56,7 +83,7 @@ class FormsController {
 
         const signaturesRaw = yield form.signatures().fetch()
         const signatures = signaturesRaw.toJSON()
-        for(let s = 0; s < signatures.length; s++) {
+        for (let s = 0; s < signatures.length; s++) {
             let signature = signatures[s]
             console.log(signature.image)
             state.signatures[signature.id] = {}
@@ -141,46 +168,84 @@ class FormsController {
     }
 
     * create(request, response) {
-        yield response.json({'ok':'ok'})
+        yield response.json({ 'ok': 'ok' })
     }
 
     * store(request, response) {
+        //Create a new state 
+        //If there is a previous state we have to generate a new state based on the old one.
+        //If there is no previous state, create a new one based on a template
+        //we receive an array of user id and an array of lot id
         const lots = JSON.parse(request.all().lots)
         const users = JSON.parse(request.all().users)
+        const firstLot = yield Lot.find(lots[0])
+        const genderEnter = yield Gender.find(1)
+        const genderExit = yield Gender.find(2)
+
+        //We create a new form
         const form = new Form()
+        form.date = new Date()
+        form.completed = false
         yield form.save()
 
-        for(let i = 0; i < lots.length; i++) {
+        const lastContractQuery = yield Database
+            .raw('select * from lots inner join contracts on contracts.lot_id = lots.id inner join forms on forms.id = contracts.form_id where lot_id = ? and (forms.gender_id = ? or forms.gender_id = ?) order by forms.created_at desc limit 1', [lots[0], 1, 2])
+        const lastContract = yield Contract.find(lastContractQuery[0][0].id)
+        const lastForm = yield lastContract.form().fetch()
+
+        //Depending on if the form of the last contract is an exit or enter form
+        if (lastForm) {
+            console.log(lastForm.gender_id)
+            lastForm.gender_id == 1 ? yield genderExit.forms().save(form) : yield genderEnter.forms().save(form)
+        }
+
+        //For all the lots selected for the state
+        for (let i = 0; i < lots.length; i++) {
             const _id = lots[i]
             const lot = yield Lot.find(_id)
             const rooms = yield Room.query().where('lot_id', _id)
-
+            const floor = yield Floor.find(lot.floor_id)
+            const type = yield Type.find(lot.type_id)
+            const building = yield Building.find(floor.building_id)
             const newLot = new Lot()
             newLot.number = lot.number
             yield newLot.save()
 
-            const contract = new Contract()
-            yield contract.save()
-            yield contract.lot().save(newLot)
-            yield contract.form().save(form)
-
-            for(let j = 0; j < users.length; j++) {
+            //For all users/tenant for the form
+            for (let j = 0; j < users.length; j++) {
                 const user = yield User.find(users[j])
-                yield contract.user().save(user)
+
+                //We create a new contract in any case
+                const contract = new Contract()
+                form.gender_id == 0 ? contract.reference_number = `${users[0].name[0]}${users[0].firstname[0]}-${building.name}-${contract.id}` : contract.reference_number = lastContract.reference_number
+                yield newLot.contracts().save(contract)
+                yield form.contracts().save(contract)
+                yield user.contracts().save(contract)
+                yield contract.save()
             }
 
-            yield Floor.find(lot.floor_id).lots().save(newLot)
-            yield Type.find(lot.type_id).lots().save(newLot)
-            
-            for(let room in rooms) {
+            yield floor.lots().save(newLot)
+            yield type.lots().save(newLot)
+
+            for (let room in rooms) {
                 room = rooms[room]
-                console.log(room)
             }
         }
 
         yield response
             .json(lots)
-            .catch('Somthing went wrong with the generation of the form')
+            .catch('Something went wrong with the generation of the form')
+    }
+
+    //The two functions below are used to prefill fields for the state (all rooms and items for a given lot)
+    createStateAccordingToOldOne(contract) {
+        return this
+    }
+
+    createBrandNewState(contract) {
+        const enterState = Gender.find(0)
+
+        return this
     }
 
 }

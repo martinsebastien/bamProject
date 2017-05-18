@@ -20,3 +20,6 @@ const Route = use('Route')
 Route.on('/').render('welcome')
 
 Route.resource('forms', 'FormsController')
+Route.resource('buildings', 'BuildingsController')
+Route.resource('floors', 'FloorsController')
+Route.resource('lots', 'LotsController')
