@@ -21,34 +21,9 @@ class FormsController {
     * index(request, response) {
 
         // accept a param: completed. Note that the param is a boolean in string format. Should do completed == 'true' to test value
-        const completed = request.all().completed
-        let allState
-
-        if (!completed) {
-            allState = yield Database
-                .table('users')
-                .innerJoin('contracts', 'users.id', 'contracts.user_id')
-                .groupBy('contracts.reference_number')
-                .orderBy('users.name')
-        }
-
-        if (completed == 'true') {
-            allState = yield Database
-                .table('users')
-                .innerJoin('contracts', 'users.id', 'contracts.user_id')
-                .innerJoin('forms', 'forms.id', 'contracts.form_id')
-                .where('completed', true)
-                .groupBy('contracts.reference_number')
-                .orderBy('users.name')
-        } else {
-            allState = yield Database
-                .table('users')
-                .innerJoin('contracts', 'users.id', 'contracts.user_id')
-                .innerJoin('forms', 'forms.id', 'contracts.form_id')
-                .where('completed', false)
-                .groupBy('contracts.reference_number')
-                .orderBy('users.name')
-        }
+        const bool = request.all().completed
+        const completed = bool == 'true' ? true : bool == 'false' ? false : bool
+        let allState = yield this.requestUsers(2, completed)
 
         yield response
             .json(allState)
@@ -246,6 +221,27 @@ class FormsController {
         const enterState = Gender.find(0)
 
         return this
+    }
+
+    requestUsers(role, completed) {
+        let base = Database
+            .debug()
+            .select('users.name as lastname', 'firstname', 'email', 'private_phone', 'public_phone', 'iban', 'contracts.reference_number', 'contracts.form_id', 'code_entrance', 'floors.number as floor', 'lots.number as flat_number', 'addresses.number as street_number', 'line', 'npa', 'cities.name as city')
+            .from('users')
+            .innerJoin('contracts', 'contracts.user_id', 'users.id')
+            .innerJoin('lots', 'lots.id', 'contracts.lot_id')
+            .innerJoin('floors', 'floors.id', 'lots.floor_id')
+            .innerJoin('buildings', 'buildings.id', 'floors.building_id')
+            .innerJoin('addresses', 'addresses.id', 'buildings.addres_id')
+            .innerJoin('streets', 'streets.id', 'addresses.street_id')
+            .innerJoin('cities', 'cities.id', 'streets.city_id')
+            .innerJoin('forms', 'forms.id', 'contracts.form_id')
+            .where('users.role_id', role)
+            .andWhere('lots.main_home', true)
+
+        completed !== undefined && base.andWhere('forms.completed', completed)
+
+        return base.groupByRaw('contracts.reference_number, users.id')
     }
 
 }

@@ -4,6 +4,10 @@ const Lucid = use('Lucid')
 
 class User extends Lucid {
 
+    static get hidden() {
+        return ['password']
+    }
+
     static boot() {
         super.boot()
         this.addHook('beforeCreate', 'User.encryptPassword')
