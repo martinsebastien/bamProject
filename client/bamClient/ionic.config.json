@@ -1,5 +1,11 @@
 {
   "name": "bamClient",
   "app_id": "",
+  "proxies": [
+    {
+      "path": "/api/",
+      "proxyUrl": "http://localhost:3333/"
+    }
+  ],
   "type": "ionic-angular"
 }

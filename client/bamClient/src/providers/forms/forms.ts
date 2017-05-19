@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { HttpService } from '../../services/http.service';
 import 'rxjs/add/operator/map';
 
+import { User } from '../../models/user';
 
 /*
   Generated class for the FormsProvider provider.
@@ -15,7 +16,14 @@ import 'rxjs/add/operator/map';
 export class FormsProvider {
 
   constructor(
-    public httpService: HttpService
+    public httpService: HttpService,
     ) {}
+
+    all(): Observable<User[]> {
+      return this.httpService
+        .get('forms?completed=true')
+        .map(data => data.json())
+        .map(users => users.map(user => User.build(user)));
+    }
 
 }

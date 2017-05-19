@@ -23,6 +23,7 @@ ion-title {
     font-family: 'Slabo 27px', serif;
     font-weight: 500;
 }
+
 .toolbar-title-ios {
     font-weight: 400;
 }
@@ -33,4 +34,14 @@ ion-title {
 
 ion-item-options {
     border: none !important;
+    font-family: 'Slabo 27px', serif;
+
+    button, .button-md, .button-ios {
+        font-size: 1.3rem !important;
+        text-transform: none !important;
+    }
+
+    ion-icon {
+        font-size: 1.8rem !important;
+    }
 }

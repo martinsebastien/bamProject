@@ -8,7 +8,7 @@ export { Response, RequestOptionsArgs }
 @Injectable()
 export class HttpService {
 
-    private base = 'http://localhost:3000/'
+    private base = 'http://localhost:8100/api/'
 
     constructor(
         private http: Http,

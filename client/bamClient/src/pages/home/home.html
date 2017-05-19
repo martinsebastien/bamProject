@@ -10,26 +10,31 @@
   <ion-searchbar></ion-searchbar>
 
   <ion-list>
-      <ion-item-sliding>
+
+      <ion-item-sliding *ngFor="let user of users">
         <ion-item>
-          <h2>Finn Ronald</h2>
-          <p class="detailsAddress">Etage 1 - Appartement 16</p>
-          <p class="address">Chemin de la Faucille 22</p>
-          <p class="address">1200 Genève</p>
+          <h2>{{user.lastname}} {{user.firstname}}</h2>
+          <p class="detailsAddress">Etage {{user.floor}} - Appartement {{user.flat_number}}</p>
+          <p class="address">{{user.line}} {{user.street_number}}</p>
+          <p class="address">{{user.npa}} {{user.city}}</p>
         </ion-item>
-        <ion-item-options side="right">
+        <ion-item-options side="right" color="secondary">
           <button ion-button color="primary">
-          <ion-icon name="text"></ion-icon>
+          <ion-icon name="ios-more-outline"></ion-icon>
           Consulter
         </button>
-          <button ion-button color="primary">
-          <ion-icon name="mail"></ion-icon>
-          Email
-        </button>
-          <button ion-button color="tertiary">
-          <ion-icon name="call"></ion-icon>
-          Appeler
-        </button>
+          <a ion-button href="mailto:{{user.email}}">
+            <button ion-button color="primary">
+              <ion-icon name="ios-mail-outline"></ion-icon>
+              Email
+            </button>
+          </a>
+          <a ion-button href="tel:{{user.private_phone ? user.private_phone : user.public_phone}}" class="secondary">
+            <button ion-button color="secondary">
+              <ion-icon name="ios-call-outline"></ion-icon>
+              Appeler
+            </button>
+          </a>
         </ion-item-options>
       </ion-item-sliding>
 
