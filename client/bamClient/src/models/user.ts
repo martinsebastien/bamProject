@@ -1,5 +1,6 @@
 export class User {
 
+    public id: Number;
     public lastname: String;
     public firstname: String;
     public email: String;
@@ -20,6 +21,7 @@ export class User {
     static build(data: any): User {
 
         const {
+            id,
             lastname,
             firstname,
             email,
@@ -39,6 +41,7 @@ export class User {
 
         const u = new User;
         u.json = data;
+        u.id = id;
         u.lastname = lastname;
         u.firstname = firstname;
         u.email = email;

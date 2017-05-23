@@ -7,11 +7,11 @@
 </ion-header>
 
 <ion-content>
-  <ion-searchbar></ion-searchbar>
+  <ion-searchbar (ionInput)="getUsers($event)"></ion-searchbar>
 
   <ion-list>
 
-      <ion-item-sliding *ngFor="let user of users">
+      <ion-item-sliding *ngFor="let user of currentUsers">
         <ion-item>
           <h2>{{user.lastname}} {{user.firstname}}</h2>
           <p class="detailsAddress">Etage {{user.floor}} - Appartement {{user.flat_number}}</p>
@@ -19,10 +19,10 @@
           <p class="address">{{user.npa}} {{user.city}}</p>
         </ion-item>
         <ion-item-options side="right" color="secondary">
-          <button ion-button color="primary">
-          <ion-icon name="ios-more-outline"></ion-icon>
-          Consulter
-        </button>
+          <button ion-button color="primary" (click)="showForm(user)">
+            <ion-icon name="ios-more-outline"></ion-icon>
+            Consulter
+          </button>
           <a ion-button href="mailto:{{user.email}}">
             <button ion-button color="primary">
               <ion-icon name="ios-mail-outline"></ion-icon>

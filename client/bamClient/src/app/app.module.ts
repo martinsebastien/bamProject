@@ -9,12 +9,14 @@ import { StatusBar } from '@ionic-native/status-bar';
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
+import { ShowFormPage } from '../pages/show-form/show-form';
 import { FormsProvider } from '../providers/forms/forms';
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage
+    HomePage,
+    ShowFormPage,
   ],
   imports: [
     BrowserModule,
@@ -24,7 +26,8 @@ import { FormsProvider } from '../providers/forms/forms';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage
+    HomePage,
+    ShowFormPage,
   ],
   providers: [
     StatusBar,

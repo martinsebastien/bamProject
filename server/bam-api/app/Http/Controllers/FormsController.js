@@ -121,6 +121,7 @@ class FormsController {
                         .select('name')
                         .from('status')
                         .where('id', item.statu_id)
+                        console.log(statu)
 
                     state.lots[lot.id].rooms[room.id].items[item.id] = {}
                     state.lots[lot.id].rooms[room.id].items[item.id].id = item.id
@@ -129,10 +130,12 @@ class FormsController {
                     state.lots[lot.id].rooms[room.id].items[item.id].comment = item.comment
                     state.lots[lot.id].rooms[room.id].items[item.id].matter = item.matter
                     state.lots[lot.id].rooms[room.id].items[item.id].statu = statu[0].name
+                    console.log(statu[0])
                     state.lots[lot.id].rooms[room.id].items[item.id].pictures = yield Database
                         .select('*')
                         .from('pictures')
                         .where('item_id', item.id)
+
                 }
             }
         }
@@ -226,7 +229,7 @@ class FormsController {
     requestUsers(role, completed) {
         let base = Database
             .debug()
-            .select('users.name as lastname', 'firstname', 'email', 'private_phone', 'public_phone', 'iban', 'contracts.reference_number', 'contracts.form_id', 'code_entrance', 'floors.number as floor', 'lots.number as flat_number', 'addresses.number as street_number', 'line', 'npa', 'cities.name as city')
+            .select('users.name as lastname', 'users.id', 'firstname', 'email', 'private_phone', 'public_phone', 'iban', 'contracts.reference_number', 'contracts.form_id', 'code_entrance', 'floors.number as floor', 'lots.number as flat_number', 'addresses.number as street_number', 'line', 'npa', 'cities.name as city')
             .from('users')
             .innerJoin('contracts', 'contracts.user_id', 'users.id')
             .innerJoin('lots', 'lots.id', 'contracts.lot_id')
