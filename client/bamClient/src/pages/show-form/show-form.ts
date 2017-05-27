@@ -29,9 +29,7 @@ export class ShowFormPage {
   ) { }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ShowFormPage');
     this.id = this.params.get('form_id');
-    console.log(this.id);
     this.initializeUsers();
   }
 
@@ -39,5 +37,16 @@ export class ShowFormPage {
     this.usersSubscription = this.formsProvider.get(this.id).subscribe(form => this.form = form);
   }
 
-
+  public countRooms(lots): number {
+    let nbr = 0;
+    for(let lot in lots){
+      const rooms = lots[lot].rooms;
+      for(let room in rooms){
+        nbr++;
+      }
+    }
+    return nbr;
   }
+
+
+}

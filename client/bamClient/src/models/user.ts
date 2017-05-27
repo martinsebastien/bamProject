@@ -22,7 +22,7 @@ export class User {
 
         const {
             id,
-            lastname,
+            name,
             firstname,
             email,
             private_phone,
@@ -42,7 +42,7 @@ export class User {
         const u = new User;
         u.json = data;
         u.id = id;
-        u.lastname = lastname;
+        u.lastname = name;
         u.firstname = firstname;
         u.email = email;
         u.private_phone = private_phone;

@@ -9,7 +9,7 @@
 <ion-content>
   <ion-searchbar (ionInput)="getUsers($event)"></ion-searchbar>
 
-  <ion-list>
+  <ion-list *ngIf="currentUsers.length">
 
       <ion-item-sliding *ngFor="let user of currentUsers">
         <ion-item>

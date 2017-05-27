@@ -40,76 +40,77 @@ class FormsController {
         const contract = yield Contract.find(form.id)
         const genderForm = yield Gender.find(form.gender_id)
         const lots = yield Database
-            .select('*')
-            .from('contracts')
-            .join('lots', 'contracts.lot_id', '=', 'lots.id')
-            .where('contracts.form_id', _id)
+            .raw('select contracts.reference_number, lots.main_home, lots.id, lots.number, lots.floor_id, lots.type_id, types.name as lot_type from lots inner join contracts on contracts.lot_id = lots.id inner join types on types.id = lots.type_id where contracts.form_id = ? group by contracts.reference_number, lots.main_home, lots.id, lots.number, lots.floor_id, lots.type_id, lot_type ', _id)
+        const users = yield Database
+            .raw('select users.name as name, users.firstname as firstname, users.email as email, users.private_phone as private_phone, users.public_phone as public_phone, users.id from users inner join contracts on contracts.user_id = users.id where contracts.form_id = 1 and users.role_id = ? group by id', 2)
+        const mainHome = yield Database
+            .raw('select * from lots inner join contracts on contracts.lot_id = lots.id inner join floors on floors.id = lots.floor_id where contracts.form_id = ? and lots.main_home = true limit 1', _id)
 
         state.general = {}
         state.general.reference_number = contract.reference_number
         state.general.date = form.date
         state.general.gender = genderForm.name
-        state.users = yield Database
-            .table('users')
-            .innerJoin('contracts', 'contracts.form_id', _id)
-            .groupBy('contracts.user_id')
-        state.signatures = {}
-        state.lots = {}
+        state.users = users[0]
+        state.signatures = []
+        state.building = {}
+        state.lots = []
+        state.building.address = {}
+        state.building.name = ''
+        state.building.code = ''
+
+        const buildingRaw = yield Database
+            .raw('select buildings.id, buildings.name as name, buildings.user_id as proprio,buildings.code_entrance as code_entrance, buildings.addres_id, floors.number as floor, lots.number as flat_number from buildings inner join floors on floors.building_id = buildings.id inner join lots on lots.floor_id = floors.id where lots.id = 1', mainHome.id)
+        const building = buildingRaw[0][0]
+        const address = yield Address.find(building.addres_id)
+        const street = yield Street.find(address.street_id)
+        const city = yield City.find(street.city_id)
+        const province = yield Province.find(city.province_id)
+        const country = yield Country.find(province.country_id)
+        let proprio = yield User.find(building.proprio)
+
+        state.floor = building.floor
+        state.flat_number = building.flat_number
+        state.building.name = building.name
+        state.building.code = building.code_entrance
+        state.building.address.line = address.line
+        state.building.address.street = street.name
+        state.building.address.number = address.number
+        state.building.address.npa = city.npa
+        state.building.address.city = city.name
+        state.building.address.province = province.short_name
+        state.building.address.country = country.short_name
 
         const signaturesRaw = yield form.signatures().fetch()
         const signatures = signaturesRaw.toJSON()
         for (let s = 0; s < signatures.length; s++) {
             let signature = signatures[s]
-            console.log(signature.image)
-            state.signatures[signature.id] = {}
-            state.signatures[signature.id].image = signature.image
-            state.signatures[signature.id].created_at = signature.created_at
-            state.signatures[signature.id].user_id = signature.user_id
+            state.signatures[s] = {}
+            state.signatures[s].image = signature.image
+            state.signatures[s].created_at = signature.created_at
+            state.signatures[s].user_id = signature.user_id
         }
 
-        for (let n = 0; n < lots.length; n++) {
-            let lot = lots[n]
-            state.lots[lot.id] = {}
-            state.lots[lot.id].building = {}
-            state.lots[lot.id].building.name = ''
-            state.lots[lot.id].building.code = ''
-            state.lots[lot.id].building.address = {}
-            state.lots[lot.id].rooms = {}
+        for (let n = 0; n < lots[0].length; n++) {
+            let lot = lots[0][n]
+            let floor_lot = yield Floor.find(lot.floor_id)
 
-            let floor = yield Floor.find(lot.floor_id)
-            let building = yield Building.find(floor.building_id)
-            let address = yield Address.find(building.addres_id)
-            let street = yield Street.find(address.street_id)
-            let city = yield City.find(street.city_id)
-            let province = yield Province.find(city.province_id)
-            let country = yield Country.find(province.country_id)
-            let proprio = yield User.find(building.user_id)
+            state.lots[n] = {}
+            state.lots[n].floor = floor_lot.number
+            state.lots[n].main_home = lot.main_home
+            state.lots[n].lot_type = lot.lot_type
 
-            state.lots[lot.id].floor = floor.number
-            state.lots[lot.id].building.name = building.name
-            state.lots[lot.id].building.code = building.code_entrance
-            state.lots[lot.id].building.address.line = address.line
-            state.lots[lot.id].building.address.street = street.name
-            state.lots[lot.id].building.address.number = address.number
-            state.lots[lot.id].building.address.npa = city.npa
-            state.lots[lot.id].building.address.city = city.name
-            state.lots[lot.id].building.address.province = province.short_name
-            state.lots[lot.id].building.address.country = country.short_name
+            state.lots[n].rooms = []
 
             const rooms = yield Database
-                .table('lots')
-                .innerJoin('contracts', 'contracts.form_id', _id)
-                .innerJoin('rooms', 'rooms.lot_id', 'contracts.lot_id')
-                .groupBy('rooms.id')
-                .orderBy('rooms.number')
+                .raw('select rooms.name as name, rooms.id as id, rooms.number as number from rooms inner join lots on lots.id = rooms.lot_id where lots.id = ?', lot.id)
 
-            for (let i = 0; i < rooms.length; i++) {
-                let room = rooms[i]
-                state.lots[lot.id].rooms[room.id] = {}
-                state.lots[lot.id].rooms[room.id].items = {}
-                state.lots[lot.id].rooms[room.id].id = room.id
-                state.lots[lot.id].rooms[room.id].name = room.name
-                state.lots[lot.id].rooms[room.id].number = room.number
+            for (let i = 0; i < rooms[0].length; i++) {
+                let room = rooms[0][i]
+                state.lots[n].rooms[i] = {}
+                state.lots[n].rooms[i].items = []
+                state.lots[n].rooms[i].id = room.id
+                state.lots[n].rooms[i].name = room.name
+                state.lots[n].rooms[i].number = room.number
 
                 const items = yield Database
                     .table('items')
@@ -121,17 +122,15 @@ class FormsController {
                         .select('name')
                         .from('status')
                         .where('id', item.statu_id)
-                        console.log(statu)
 
-                    state.lots[lot.id].rooms[room.id].items[item.id] = {}
-                    state.lots[lot.id].rooms[room.id].items[item.id].id = item.id
-                    state.lots[lot.id].rooms[room.id].items[item.id].name = item.name
-                    state.lots[lot.id].rooms[room.id].items[item.id].number = item.number
-                    state.lots[lot.id].rooms[room.id].items[item.id].comment = item.comment
-                    state.lots[lot.id].rooms[room.id].items[item.id].matter = item.matter
-                    state.lots[lot.id].rooms[room.id].items[item.id].statu = statu[0].name
-                    console.log(statu[0])
-                    state.lots[lot.id].rooms[room.id].items[item.id].pictures = yield Database
+                    state.lots[n].rooms[i].items[j] = {}
+                    state.lots[n].rooms[i].items[j].id = item.id
+                    state.lots[n].rooms[i].items[j].name = item.name
+                    state.lots[n].rooms[i].items[j].number = item.number
+                    state.lots[n].rooms[i].items[j].comment = item.comment
+                    state.lots[n].rooms[i].items[j].matter = item.matter
+                    state.lots[n].rooms[i].items[j].statu = statu[0].name
+                    state.lots[n].rooms[i].items[j].pictures = yield Database
                         .select('*')
                         .from('pictures')
                         .where('item_id', item.id)
@@ -139,6 +138,7 @@ class FormsController {
                 }
             }
         }
+        console.log(state.lots)
 
         yield response
             .json(state)
@@ -229,7 +229,7 @@ class FormsController {
     requestUsers(role, completed) {
         let base = Database
             .debug()
-            .select('users.name as lastname', 'users.id', 'firstname', 'email', 'private_phone', 'public_phone', 'iban', 'contracts.reference_number', 'contracts.form_id', 'code_entrance', 'floors.number as floor', 'lots.number as flat_number', 'addresses.number as street_number', 'line', 'npa', 'cities.name as city')
+            .select('users.name as name', 'users.id', 'users.firstname', 'users.email', 'users.private_phone', 'users.public_phone', 'contracts.form_id', 'floors.number as floor', 'lots.number as flat_number', 'addresses.number as street_number', 'line', 'npa', 'cities.name as city')
             .from('users')
             .innerJoin('contracts', 'contracts.user_id', 'users.id')
             .innerJoin('lots', 'lots.id', 'contracts.lot_id')
@@ -244,7 +244,7 @@ class FormsController {
 
         completed !== undefined && base.andWhere('forms.completed', completed)
 
-        return base.groupByRaw('contracts.reference_number, users.id')
+        return base.groupByRaw('contracts.reference_number, users.id, name, users.firstname, users.email, users.private_phone, users.public_phone, contracts.form_id, floor, flat_number, street_number, line, npa, city')
     }
 
 }

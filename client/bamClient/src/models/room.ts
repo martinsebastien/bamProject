@@ -8,7 +8,6 @@ export class Room {
     public number: number;
     public items: Item[];
 
-
     static build(data: any): Room {
 
         const {
@@ -17,14 +16,12 @@ export class Room {
             number,
             id,
         } = data;
-
-        const [objects = []] = items;
         
         const r = new Room;
         r.id = id;
         r.name = name;
         r.number = number;
-        r.items = objects.map(object => Item.build(object));
+        r.items = items.map(item => Item.build(item));
         return r;
     }
 

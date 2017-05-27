@@ -6,13 +6,78 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-    <ion-title>ShowFormPage</ion-title>
+  <ion-navbar color="primary">
+    <ion-title *ngIf="form">{{form.gender}}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding>
+
+  <div class="loadingBlock" *ngIf="!form">
+    <div>
+      <h2>Chargement des données en cours</h2>
+      <p>Ce processus peut prendre quelques secondes ...</p>
+      <ion-spinner></ion-spinner>
+    </div>
+  </div>
+
+  <ion-list *ngIf="form">
+
+    <div class="containerInfo">
+      <ion-card-header>
+        Général
+      </ion-card-header>
+      <ion-item>
+        <h3 class="titleItems">Référence de dossier : </h3> 
+        <span class="contentItems">{{form.reference_number}}</span>
+        <button ion-button clear item-right color="secondary"><ion-icon name="ios-image-outline" class="photoIcon"></ion-icon></button>
+      </ion-item>
+      <ion-item>
+        <h3 class="titleItems">Date : </h3> 
+        <span class="contentItems">{{form.date | date}}</span>
+      </ion-item>
+      <ion-item>
+        <h3 class="titleItems">Locataires : </h3> 
+        <div class="tenantsBlock" *ngFor="let user of form.users">
+          <p class="contentItems bold">{{user.firstname}} {{user.lastname}}</p>
+          <p class="contentItems italic">{{user.private_phone || user.public_phone}}</p>
+          <p class="contentItems">{{user.email}}</p>
+        </div>
+      </ion-item>
+      <ion-item *ngIf="form.building.code">
+        <h3 class="titleItems">Code porte d'entrée : </h3>
+        <span class="contentItems">{{form.building.code}}</span>
+      </ion-item>
+      <ion-item>
+        <h3 class="titleItems">Etage : </h3>
+        <span class="contentItems">{{form.floor}}</span>
+      </ion-item>
+      <ion-item>
+        <h3 class="titleItems">Numéro d'appartement : </h3>
+        <span class="contentItems">{{form.flat_number}}</span>
+      </ion-item>
+      <ion-item>
+        <h3 class="titleItems">Nombre de pièces : </h3>
+        <span class="contentItems">{{countRooms(form.json.lots)}}</span>
+      </ion-item>
+      <ion-item>
+        <h3 class="titleItems">Adresse : </h3>
+        <p class="contentItems">{{form.building.address.line}}</p>
+        <p class="contentItems">{{form.building.address.street}} {{form.building.address.number}}</p>
+        <p class="contentItems">{{form.building.address.npa}} {{form.building.address.city}}</p>
+      </ion-item>
+    </div>
+
+    <div class="containerInfo" *ngFor="let lot of form.lots">
+      <div *ngIf="lot.main_home">
+        <ion-card-header>
+          {{lot.lot_type}}
+        </ion-card-header>
+      </div>
+    </div>
+
+  </ion-list>
 
 </ion-content>

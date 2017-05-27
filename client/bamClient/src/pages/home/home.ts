@@ -48,7 +48,6 @@ export class HomePage {
     }
 
     showForm({ form_id }: User): void {
-      console.log({ form_id })
       this.navCtrl.push(ShowFormPage, { form_id });
     }
 

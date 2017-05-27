@@ -22,8 +22,6 @@ export class Item {
             pictures = [],
         } = data;
 
-        const [photos = []] = pictures;
-
         const i = new Item;
         i.id = id;
         i.name = name;
@@ -31,7 +29,7 @@ export class Item {
         i.comment = comment;
         i.matter = matter;
         i.statu = statu;
-        i.pictures = photos.map(photo => Picture.build(photo));
+        i.pictures = pictures.map(picture => Picture.build(picture));
 
         return i;
     }

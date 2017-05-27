@@ -1,28 +1,27 @@
-import { User } from './user';
 import { Room } from './room';
-import { Building } from './building';
 
 export class Lot {
 
-    public building: Building;
     public rooms: Room[];
     public floor: number;
+    public main_home: boolean;
+    public lot_type: string;
     public json: any;
 
     static build(data: any): Lot {
-
+        console.log(data);
         const {
-            building,
-            rooms,
+            rooms = [],
             floor,
+            main_home,
+            lot_type,
         } = data;
-
-        const [blocks = []] = rooms;
 
         const l = new Lot;
         l.json = data;
-        l.building = Building.build(building);
-        l.rooms = blocks.map(block => Room.build(block));
+        l.main_home = main_home;
+        l.lot_type = lot_type;
+        l.rooms = rooms.map(room => Room.build(room));
         l.floor = floor;
         return l;
     }

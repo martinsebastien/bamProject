@@ -1,6 +1,7 @@
 import { User } from './user';
 import { Signature } from './signature';
-import { Lot } from './lot'
+import { Lot } from './lot';
+import { Building } from './building';
 
 export class Form {
 
@@ -8,7 +9,10 @@ export class Form {
     public date: string;
     public gender: string;
     public users: User[];
+    public building: Building;
     public signatures: Signature[];
+    public floor: string;
+    public flat_number: string;
     public lots: Lot[];
     public json: any;
 
@@ -17,25 +21,29 @@ export class Form {
         const {
             general: {
                 reference_number,
-                date,
-                gender,
+            date,
+            gender,
             },
             users = [],
+            building,
+            floor,
+            flat_number,
             signatures = [],
-            lots: flats = [],
+            lots = [],
         } = data;
-
-        const [tenants = []] = users;
-        const [marks = []] = signatures;
-        const [lots = []] = flats;
 
         const f = new Form;
         f.json = data;
+        f.building = Building.build(building);
+        f.reference_number = reference_number;
         f.date = date;
         f.gender = gender;
+        f.floor = floor;
+        f.flat_number = flat_number;
         f.users = users.map(user => User.build(user));
-        f.signatures = marks.map(mark => Signature.build(mark));
-        f.lots = lots.map(lot => Lot.build(lot));
+        f.signatures = signatures.map(mark => Signature.build(mark));
+        f.lots = lots.map(lot => Lot.build(lot))
+        console.log(f.lots)
         return f;
     }
 }
