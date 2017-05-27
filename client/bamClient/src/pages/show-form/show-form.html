@@ -30,16 +30,15 @@
         Général
       </ion-card-header>
       <ion-item>
-        <h3 class="titleItems">Référence de dossier : </h3> 
+        <h3 class="titleItems">Référence de dossier : </h3>
         <span class="contentItems">{{form.reference_number}}</span>
-        <button ion-button clear item-right color="secondary"><ion-icon name="ios-image-outline" class="photoIcon"></ion-icon></button>
       </ion-item>
       <ion-item>
-        <h3 class="titleItems">Date : </h3> 
+        <h3 class="titleItems">Date : </h3>
         <span class="contentItems">{{form.date | date}}</span>
       </ion-item>
       <ion-item>
-        <h3 class="titleItems">Locataires : </h3> 
+        <h3 class="titleItems">Locataires : </h3>
         <div class="tenantsBlock" *ngFor="let user of form.users">
           <p class="contentItems bold">{{user.firstname}} {{user.lastname}}</p>
           <p class="contentItems italic">{{user.private_phone || user.public_phone}}</p>
@@ -70,11 +69,24 @@
       </ion-item>
     </div>
 
-    <div class="containerInfo" *ngFor="let lot of form.lots">
+    <div *ngFor="let lot of form.lots">
       <div *ngIf="lot.main_home">
-        <ion-card-header>
-          {{lot.lot_type}}
-        </ion-card-header>
+        <div class="containerInfo" *ngFor="let room of lot.rooms">
+          <ion-card-header>
+            {{room.name}}
+          </ion-card-header>
+          <ion-item *ngFor="let item of room.items">
+            <h3 class="titleItems">{{item.name}} : </h3><br>
+            <span class="contentItems bold">Matière / Type :</span>
+            <span class="contentItems italic">{{item.matter}}</span>
+            <span class="contentItems bold">Etat :</span>
+            <span class="contentItems italic">{{item.statu}}</span>
+            <p class="contentItems bold">Remarques (nombre, année) :</p>
+            <p class="contentItems" *ngIf="item.comment">{{item.comment}}</p>
+            <button ion-button clear item-right color="secondary"><ion-icon name="ios-image-outline" class="photoIcon" *ngIf="item.pictures.length"></ion-icon></button>
+          </ion-item>
+
+        </div>
       </div>
     </div>
 
