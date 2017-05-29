@@ -14,6 +14,7 @@ export class User {
     public flat_number: String;
     public street_number: String;
     public line: String;
+    public role: number;
     public npa: String;
     public city: String;
     public json: any;
@@ -35,6 +36,7 @@ export class User {
             flat_number,
             street_number,
             line,
+            role,
             npa,
             city
         } = data
@@ -55,6 +57,7 @@ export class User {
         u.flat_number = flat_number;
         u.street_number = street_number;
         u. line = line;
+        u.role = role;
         u.npa = npa;
         u.city = city;
         return u;

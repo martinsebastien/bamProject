@@ -40,9 +40,11 @@
       <ion-item>
         <h3 class="titleItems">Locataires : </h3>
         <div class="tenantsBlock" *ngFor="let user of form.users">
-          <p class="contentItems bold">{{user.firstname}} {{user.lastname}}</p>
-          <p class="contentItems italic">{{user.private_phone || user.public_phone}}</p>
-          <p class="contentItems">{{user.email}}</p>
+          <div *ngIf="user.role == 2">
+            <p class="contentItems bold">{{user.firstname}} {{user.lastname}}</p>
+            <p class="contentItems italic">{{user.private_phone || user.public_phone}}</p>
+            <p class="contentItems">{{user.email}}</p>
+          </div>
         </div>
       </ion-item>
       <ion-item *ngIf="form.building.code">
@@ -83,7 +85,7 @@
             <span class="contentItems italic">{{item.statu}}</span>
             <p class="contentItems bold">Remarques (nombre, année) :</p>
             <p class="contentItems" *ngIf="item.comment">{{item.comment}}</p>
-            <button ion-button clear item-right color="secondary"><ion-icon name="ios-image-outline" class="photoIcon" *ngIf="item.pictures.length"></ion-icon></button>
+            <button ion-button clear item-right color="secondary" *ngIf="item.pictures.length"><ion-icon name="ios-image-outline" class="photoIcon"></ion-icon></button>
           </ion-item>
         </div>
 
@@ -115,32 +117,38 @@
               <span class="contentItems italic">{{item.statu}}</span>
               <p class="contentItems bold">Remarques (nombre, année) :</p>
               <p class="contentItems" *ngIf="item.comment">{{item.comment}}</p>
-              <button ion-button clear item-right color="secondary"><ion-icon name="ios-image-outline" class="photoIcon" *ngIf="item.pictures.length"></ion-icon></button>
+              <button ion-button clear item-right color="secondary" *ngIf="item.pictures.length" (click)="showPictures(item.pictures)"><ion-icon name="ios-image-outline" class="photoIcon"></ion-icon></button>
             </ion-item>
           </div>
         </div>
       </div>
+    </div>
 
-      <div class="containerInfo">
-        <ion-card-header>
-          Remarques générales
-        </ion-card-header>
-        <ion-item>
-          <p class="contentItems"><strong>Remarques :</strong> A l'exception des dégâts mentionnés dans le présent état de lieux, le locataire reconnait avoir reçu les locaux et installations relatifs au contrat de bail en bon état d'entretien et s'engage à les rendre comme tel à son départ. </p>
-        </ion-item>
-      </div>
+    <div class="containerInfo">
+      <ion-card-header>
+        Remarques générales
+      </ion-card-header>
+      <ion-item>
+        <p class="contentItems"><strong>Remarques :</strong> A l'exception des dégâts mentionnés dans le présent état de lieux, le locataire reconnait
+          avoir reçu les locaux et installations relatifs au contrat de bail en bon état d'entretien et s'engage à les rendre
+          comme tel à son départ. </p>
+      </ion-item>
+    </div>
 
-      <div class="containerInfo">
-        <ion-card-header>
-          Signatures
-        </ion-card-header>
-        <ion-item>
-          <p class="contentItems">
-          Etat des lieux dressé contradictoirement à <span class="bold">{{form.building.address.city}}</span> le <span>{{getSignDate(form.signatures) | date}}</span>
-          </p>
-        </ion-item>
-      </div>
-
+    <div class="containerInfo">
+      <ion-card-header>
+        Signatures
+      </ion-card-header>
+      <ion-item>
+        <p class="contentItems">
+          Etat des lieux dressé contradictoirement à <span class="bold">{{form.building.address.city}}</span> le
+          <span class="bold">{{form.signatures[0].date | date}}</span>
+        </p>
+        <div class="signatureContainer" *ngFor="let user of form.users">
+          <p><span class="bold">{{user.lastname}} {{user.firstname}}</span> - <span class="italic">{{displayRole(user.role)}}</span></p>
+          <img [src]="getSignature(user.id, form.signatures) | safeUrl" alt="Signature of {{user.lastname}} {{user.firstname}}">
+        </div>
+      </ion-item>
     </div>
 
   </ion-list>

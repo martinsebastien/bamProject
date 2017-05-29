@@ -42,7 +42,7 @@ class FormsController {
         const lots = yield Database
             .raw('select contracts.reference_number, lots.main_home, lots.id, lots.number, lots.floor_id, lots.type_id, types.name as lot_type from lots inner join contracts on contracts.lot_id = lots.id inner join types on types.id = lots.type_id where contracts.form_id = ? group by contracts.reference_number, lots.main_home, lots.id, lots.number, lots.floor_id, lots.type_id, lot_type ', _id)
         const users = yield Database
-            .raw('select users.name as name, users.firstname as firstname, users.email as email, users.private_phone as private_phone, users.public_phone as public_phone, users.id from users inner join contracts on contracts.user_id = users.id where contracts.form_id = 1 and users.role_id = ? group by id', 2)
+            .raw('select users.name as name, users.role_id as role, users.firstname as firstname, users.email as email, users.private_phone as private_phone, users.public_phone as public_phone, users.id from users inner join contracts on contracts.user_id = users.id where contracts.form_id = 1 group by name, role, firstname, email, private_phone, public_phone, users.id')
         const mainHome = yield Database
             .raw('select * from lots inner join contracts on contracts.lot_id = lots.id inner join floors on floors.id = lots.floor_id where contracts.form_id = ? and lots.main_home = true limit 1', _id)
 
