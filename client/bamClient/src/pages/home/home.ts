@@ -3,7 +3,6 @@ import { NavController } from 'ionic-angular';
 import { Subscription } from 'rxjs';
 
 import { User } from '../../models/user';
-import { FormControl } from '@angular/forms';
 import { FormsProvider } from '../../providers/forms/forms';
 
 import { ShowFormPage } from '../show-form/show-form';

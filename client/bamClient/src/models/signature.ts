@@ -10,14 +10,14 @@ export class Signature {
         const {
             image,
             user_id,
-            date,
+            created_at,
         } = data;
 
         const s = new Signature;
         s.json = data;
         s.image = image;
         s.user_id = user_id;
-        s.date = date;
+        s.date = created_at;
         return s;
     }
 }

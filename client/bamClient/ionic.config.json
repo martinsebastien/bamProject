@@ -1,6 +1,6 @@
 {
   "name": "bamClient",
-  "app_id": "",
+  "app_id": "5b9ead2e",
   "proxies": [
     {
       "path": "/api/",

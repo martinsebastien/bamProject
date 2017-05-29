@@ -59,7 +59,7 @@
       </ion-item>
       <ion-item>
         <h3 class="titleItems">Nombre de pièces : </h3>
-        <span class="contentItems">{{countRooms(form.json.lots)}}</span>
+        <span class="contentItems">{{countRooms(form.lots)}}</span>
       </ion-item>
       <ion-item>
         <h3 class="titleItems">Adresse : </h3>
@@ -85,9 +85,62 @@
             <p class="contentItems" *ngIf="item.comment">{{item.comment}}</p>
             <button ion-button clear item-right color="secondary"><ion-icon name="ios-image-outline" class="photoIcon" *ngIf="item.pictures.length"></ion-icon></button>
           </ion-item>
+        </div>
 
+        <div class="containerInfo">
+          <ion-card-header>
+            Relevé des compteurs
+          </ion-card-header>
+          <ion-item *ngFor="let consumption of lot.consumptions">
+            <h3 class="titleItems">{{consumption.name}} (<span [innerHTML]="consumption.metric | safeHtml"></span>): </h3><br>
+            <span class="contentItems bold">Numéro :</span>
+            <span class="contentItems italic">{{consumption.number}}</span>
+            <span class="contentItems bold">Valeur :</span>
+            <span class="contentItems italic">{{consumption.value}}</span>
+          </ion-item>
         </div>
       </div>
+
+      <div *ngIf="!lot.main_home">
+        <div class="containerInfo">
+          <ion-card-header>
+            {{lot.lot_type}}
+          </ion-card-header>
+          <div *ngFor="let room of lot.rooms">
+            <ion-item *ngFor="let item of room.items">
+              <h3 class="titleItems">{{item.name}} : </h3><br>
+              <span class="contentItems bold">Matière / Type :</span>
+              <span class="contentItems italic">{{item.matter}}</span>
+              <span class="contentItems bold">Etat :</span>
+              <span class="contentItems italic">{{item.statu}}</span>
+              <p class="contentItems bold">Remarques (nombre, année) :</p>
+              <p class="contentItems" *ngIf="item.comment">{{item.comment}}</p>
+              <button ion-button clear item-right color="secondary"><ion-icon name="ios-image-outline" class="photoIcon" *ngIf="item.pictures.length"></ion-icon></button>
+            </ion-item>
+          </div>
+        </div>
+      </div>
+
+      <div class="containerInfo">
+        <ion-card-header>
+          Remarques générales
+        </ion-card-header>
+        <ion-item>
+          <p class="contentItems"><strong>Remarques :</strong> A l'exception des dégâts mentionnés dans le présent état de lieux, le locataire reconnait avoir reçu les locaux et installations relatifs au contrat de bail en bon état d'entretien et s'engage à les rendre comme tel à son départ. </p>
+        </ion-item>
+      </div>
+
+      <div class="containerInfo">
+        <ion-card-header>
+          Signatures
+        </ion-card-header>
+        <ion-item>
+          <p class="contentItems">
+          Etat des lieux dressé contradictoirement à <span class="bold">{{form.building.address.city}}</span> le <span>{{getSignDate(form.signatures) | date}}</span>
+          </p>
+        </ion-item>
+      </div>
+
     </div>
 
   </ion-list>

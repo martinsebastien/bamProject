@@ -98,8 +98,20 @@ class FormsController {
             state.lots[n].floor = floor_lot.number
             state.lots[n].main_home = lot.main_home
             state.lots[n].lot_type = lot.lot_type
-
             state.lots[n].rooms = []
+
+            state.lots[n].consumptions = []
+            let consumptions = yield Database
+                .raw('select consumptions.number as number, consumptions.value as value, energy.name as name, energy.metric as metric from lots inner join consumptions on consumptions.lot_id = lots.id inner join energy on energy.id = consumptions.energy_id where lots.id = ?', lot.id)
+
+            for (let c = 0; c < consumptions[0].length; c++) {
+                let consumption = consumptions[0][c]
+                state.lots[n].consumptions[c] = {}
+                state.lots[n].consumptions[c].name = consumption.name
+                state.lots[n].consumptions[c].metric = consumption.metric
+                state.lots[n].consumptions[c].number = consumption.number
+                state.lots[n].consumptions[c].value = consumption.value
+            }
 
             const rooms = yield Database
                 .raw('select rooms.name as name, rooms.id as id, rooms.number as number from rooms inner join lots on lots.id = rooms.lot_id where lots.id = ?', lot.id)
@@ -138,7 +150,6 @@ class FormsController {
                 }
             }
         }
-        console.log(state.lots)
 
         yield response
             .json(state)

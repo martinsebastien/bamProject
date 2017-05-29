@@ -32,6 +32,16 @@ ion-title {
     border: none !important;
 }
 
+.contentItems {
+    white-space: normal;
+}
+
+ion-label {
+    h2, p {
+        white-space: normal;
+    }
+}
+
 ion-item-options {
     border: none !important;
     font-family: 'Slabo 27px', serif;

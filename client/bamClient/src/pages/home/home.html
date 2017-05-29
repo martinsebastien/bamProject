@@ -9,34 +9,43 @@
 <ion-content>
   <ion-searchbar (ionInput)="getUsers($event)"></ion-searchbar>
 
+  <div class="loadingBlock" *ngIf="!currentUsers.length">
+    <div>
+      <h2>Chargement des données en cours</h2>
+      <p>Ce processus peut prendre quelques secondes ...</p>
+      <p>Si ce chargement venait à durer trop longtemps, pensez à vérifier votre connexion internet</p>
+      <ion-spinner></ion-spinner>
+    </div>
+  </div>
+
   <ion-list *ngIf="currentUsers.length">
 
-      <ion-item-sliding *ngFor="let user of currentUsers">
-        <ion-item>
-          <h2>{{user.lastname}} {{user.firstname}}</h2>
-          <p class="detailsAddress">Etage {{user.floor}} - Appartement {{user.flat_number}}</p>
-          <p class="address">{{user.line}} {{user.street_number}}</p>
-          <p class="address">{{user.npa}} {{user.city}}</p>
-        </ion-item>
-        <ion-item-options side="right" color="secondary">
-          <button ion-button color="primary" (click)="showForm(user)">
+    <ion-item-sliding *ngFor="let user of currentUsers">
+      <ion-item>
+        <h2>{{user.lastname}} {{user.firstname}}</h2>
+        <p class="detailsAddress">Etage {{user.floor}} - Appartement {{user.flat_number}}</p>
+        <p class="address">{{user.line}} {{user.street_number}}</p>
+        <p class="address">{{user.npa}} {{user.city}}</p>
+      </ion-item>
+      <ion-item-options side="right" color="secondary">
+        <button ion-button color="primary" (click)="showForm(user)">
             <ion-icon name="ios-more-outline"></ion-icon>
             Consulter
           </button>
-          <a ion-button href="mailto:{{user.email}}">
-            <button ion-button color="primary">
+        <a ion-button href="mailto:{{user.email}}">
+          <button ion-button color="primary">
               <ion-icon name="ios-mail-outline"></ion-icon>
               Email
             </button>
-          </a>
-          <a ion-button href="tel:{{user.private_phone ? user.private_phone : user.public_phone}}" class="secondary">
-            <button ion-button color="secondary">
+        </a>
+        <a ion-button href="tel:{{user.private_phone ? user.private_phone : user.public_phone}}" class="secondary">
+          <button ion-button color="secondary">
               <ion-icon name="ios-call-outline"></ion-icon>
               Appeler
             </button>
-          </a>
-        </ion-item-options>
-      </ion-item-sliding>
+        </a>
+      </ion-item-options>
+    </ion-item-sliding>
 
   </ion-list>
 

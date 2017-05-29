@@ -33,4 +33,25 @@ page-home {
         background-color: #69F0AE !important;
     }
 
+    .loadingBlock {
+        padding: 6px;
+        display: flex;
+        height: 100%;
+        align-items: center;
+        text-align: center;
+
+        h2 {
+            font-size: 20px;
+        }
+        p {
+            font-size: 12px;
+            font-style: italic;
+            color: rgba(0,0,0,0.5);
+        }
+
+        div {
+            width: 100%;
+        }
+    }
+
 }

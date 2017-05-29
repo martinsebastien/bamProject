@@ -39,14 +39,20 @@ export class ShowFormPage {
 
   public countRooms(lots): number {
     let nbr = 0;
-    for(let lot in lots){
-      const rooms = lots[lot].rooms;
-      for(let room in rooms){
-        nbr++;
+    for(let n = 0; n < lots.length; n++){
+      const lot = lots[n];
+      if (lot.main_home == true) {
+        const rooms = lot.rooms;
+        for(let r = 0; r < rooms.length; r++) {
+          nbr++;
+        }
       }
     }
     return nbr;
   }
 
-
+  public getSignDate(signatures): string{
+    console.log(signatures[0].date)
+    return signatures[0].date
+  }
 }
