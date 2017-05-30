@@ -30,6 +30,19 @@
 
   <div class="lotsContainer">
     <h1>Lots </h1>
+    <ion-list *ngIf="lots.length">
+
+      <ion-item *ngFor="let lot of lots">
+        <h2>{{lot.lot_type}} {{lot.number}}</h2>
+        <p class="detailsAddress">Immeuble {{lot.building_name}} - Etage {{lot.floor}}</p>
+        <p class="address">{{lot.line}}</p>
+        <p class="address">{{lot.street}} {{lot.address_number}}</p>
+        <p class="address">{{lot.npa}} {{lot.city}}</p>
+        <button ion-button clear item-right color="red" (click)="deleteLot(lot)"><ion-icon name="ios-trash-outline" class="trashIcon"></ion-icon></button>
+      </ion-item>
+
+    </ion-list>
+
     <button class="addButton" (click)="showSearchLot()"><ion-icon name="add"></ion-icon></button>
   </div>
 

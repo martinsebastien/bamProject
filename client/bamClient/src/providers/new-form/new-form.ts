@@ -34,7 +34,9 @@ export class NewFormProvider {
 
   public addLot(lot) {
     let isPresent: boolean = false;
+    console.log(lot);
     for (let i = 0; i < this.lots.length; i++) {
+      console.log(this.lots[i].id)
       this.lots[i].id == lot.id ? isPresent = true : console.log(lot);
     }
 

@@ -1,5 +1,5 @@
 <!--
-  Generated template for the SearchLotPage page.
+  Generated template for the SearchUserPage page.
 
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
@@ -12,11 +12,12 @@
 
 </ion-header>
 
+
 <ion-content>
 
-  <ion-searchbar></ion-searchbar>
+  <ion-searchbar (ionInput)="getLots($event)"></ion-searchbar>
 
-  <div class="loadingBlock">
+  <div class="loadingBlock" *ngIf="!currentLots.length">
     <div>
       <h2>Chargement des données en cours</h2>
       <p>Ce processus peut prendre quelques secondes ...</p>
@@ -24,5 +25,20 @@
       <ion-spinner></ion-spinner>
     </div>
   </div>
+
+  <ion-list *ngIf="currentLots.length">
+
+    <ion-item *ngFor="let lot of currentLots">
+      <h2>{{lot.lot_type}} {{lot.number}}</h2>
+      <p class="detailsAddress">Immeuble {{lot.building_name}} - Etage {{lot.floor}}</p>
+      <p class="address">{{lot.line}}</p>
+      <p class="address">{{lot.street}} {{lot.address_number}}</p>
+      <p class="address">{{lot.npa}} {{lot.city}}</p>
+      <button ion-button clear item-right class="addButton" (click)="addLot(lot)"><ion-icon name="ios-add-outline" class="addIcon"></ion-icon></button>
+    </ion-item>
+
+  </ion-list>
+
+
 
 </ion-content>

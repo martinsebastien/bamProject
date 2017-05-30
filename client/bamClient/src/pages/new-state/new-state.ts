@@ -18,6 +18,7 @@ import { SearchLotPage } from '../search-lot/search-lot';
 export class NewStatePage {
 
   public users = [];
+  public lots = [];
 
   constructor(
     public navCtrl: NavController, 
@@ -29,6 +30,7 @@ export class NewStatePage {
 
   ionViewDidLoad() {
     this.users = this.newForm.getUsers();
+    this.lots = this.newForm.getLots();
   }
 
   public showSearchUser() {
@@ -42,6 +44,11 @@ export class NewStatePage {
   public deleteUser(user) {
     this.newForm.deleteUser(user);
     this.users = this.newForm.getUsers();
+  }
+
+  public deleteLot(lot) {
+    this.newForm.deleteLot(lot);
+    this.lots = this.newForm.getLots();
   }
 
   public confirm() {
