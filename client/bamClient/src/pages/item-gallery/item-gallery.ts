@@ -14,14 +14,18 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class ItemGalleryPage {
 
+  public pictures = [];
+
   constructor(
     public navCtrl: NavController, 
-    public navParams: NavParams,
+    public params: NavParams,
     ) {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad ItemGalleryPage');
+    console.log(this.params.data)
+    this.pictures = this.params.data;
+    console.log(this.pictures)
   }
 
 }

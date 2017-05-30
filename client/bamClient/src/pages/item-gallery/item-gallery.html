@@ -13,9 +13,11 @@
 
 
 <ion-content>
-  <img src="http://www.nouvellecaledonie.travel/sites/default/files/2016-09/lagon_nouvelle_caledonie_ile_des_pins_653x437_3.jpg" imageViewer>
-  <div *ngFor="let picture of pictures">
-    <img [src]="picture.image" alt="" imageViewer>
-  </div>
+
+  <ion-slides class="image-slider" effect="coverflow" pager="true">
+    <ion-slide *ngFor="let picture of pictures">
+      <img [src]="picture.image | safeUrl" alt="" imageViewer>
+    </ion-slide>
+  </ion-slides>
 
 </ion-content>

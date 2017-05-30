@@ -1,3 +1,22 @@
 page-item-gallery {
+    ion-content {
+        background: black !important;
+    }
+
+    ion-slide {
+        background: black;
+    }
+
+    .content-ios {
+        background: black;
+    }
+
+    .swiper-container-horizontal > .swiper-pagination-bullets .swiper-pagination-bullet {
+        border: solid 1px white;
+    }
+
+    .swiper-pagination-bullet-active {
+        background: white !important;
+    }
 
 }
