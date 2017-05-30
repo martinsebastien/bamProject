@@ -5,10 +5,10 @@ import { HttpService } from '../../services/http.service';
 import 'rxjs/add/operator/map';
 
 import { User } from '../../models/user';
-import { Form } from '../../models/form';
+
 
 @Injectable()
-export class FormsProvider {
+export class UsersProvider {
 
   constructor(
     public httpService: HttpService,
@@ -16,15 +16,15 @@ export class FormsProvider {
 
     all(): Observable<User[]> {
       return this.httpService
-        .get('forms?completed=true')
+        .get('users')
         .map(data => data.json())
         .map(users => users.map(user => User.build(user)));
     }
 
     get(id: string): Observable<any> {
       return this.httpService
-        .get(`forms/${id}`)
+        .get(`users/${id}`)
         .map(data => data.json())
-        .map(form => Form.build(form))
+        .map(user => User.build(user))
     }
 }

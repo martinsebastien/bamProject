@@ -43,7 +43,6 @@ export class Form {
         f.users = users.map(user => User.build(user));
         f.signatures = signatures.map(mark => Signature.build(mark));
         f.lots = lots.map(lot => Lot.build(lot))
-        console.log(f.lots)
         return f;
     }
 }

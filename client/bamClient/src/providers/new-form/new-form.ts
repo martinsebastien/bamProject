@@ -1,35 +1,68 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map';
+import { ToastController } from 'ionic-angular';
 
-/*
-  Generated class for the NewFormProvider provider.
-
-  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
-  for more info on providers and Angular 2 DI.
-*/
 @Injectable()
 export class NewFormProvider {
 
   private users = [];
   private lots = [];
 
-  constructor() {
-  }
+  constructor(
+    public toastCtrl: ToastController,
+  ) { }
 
   public addUser(user) {
-    this.users.push(user);
+    let isPresent: boolean = false;
+    for (let i = 0; i < this.users.length; i++) {
+      this.users[i].id == user.id ? isPresent = true : console.log(user);
+    }
+
+    !isPresent ? this.users.push(user) : this.presentToast('Utilisateur déjà sélectionné');
   }
 
-  public getUser() {
+  public getUsers() {
     return this.users;
   }
 
-  public addLot(lot) {
-    this.lots.push(lot);
+  public deleteUser(userToDelete) {
+    this.users = this.users.filter((user) => {
+      return user.id != userToDelete.id;
+    })
   }
 
-  public getLot() {
+  public addLot(lot) {
+    let isPresent: boolean = false;
+    for (let i = 0; i < this.lots.length; i++) {
+      this.lots[i].id == lot.id ? isPresent = true : console.log(lot);
+    }
+
+    !isPresent ? this.lots.push(lot) : this.presentToast('Lot déjà sélectionné');
+  }
+
+  public getLots() {
     return this.lots;
+  }
+
+  public deleteLot(lotToDelete) {
+    this.lots = this.lots.filter((lot) => {
+      return lot.id != lotToDelete.id;
+    })
+  }
+
+
+  public resetData() {
+    this.lots = [];
+    this.users = [];
+  }
+
+  public presentToast(text) {
+    let toast = this.toastCtrl.create({
+      message: text,
+      duration: 3000
+    });
+    toast.present();
   }
 
 }

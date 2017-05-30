@@ -4,27 +4,27 @@ import { Observable } from 'rxjs';
 import { HttpService } from '../../services/http.service';
 import 'rxjs/add/operator/map';
 
-import { User } from '../../models/user';
-import { Form } from '../../models/form';
+import { Lot } from '../../models/lot';
+
 
 @Injectable()
-export class FormsProvider {
+export class LotsProvider {
 
   constructor(
     public httpService: HttpService,
     ) {}
 
-    all(): Observable<User[]> {
+    all(): Observable<Lot[]> {
       return this.httpService
-        .get('forms?completed=true')
+        .get('lots')
         .map(data => data.json())
-        .map(users => users.map(user => User.build(user)));
+        .map(users => users.map(user => Lot.build(user)));
     }
 
     get(id: string): Observable<any> {
       return this.httpService
-        .get(`forms/${id}`)
+        .get(`lots/${id}`)
         .map(data => data.json())
-        .map(form => Form.build(form))
+        .map(lot => Lot.build(lot))
     }
 }

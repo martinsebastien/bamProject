@@ -15,23 +15,23 @@
 <ion-content padding>
   <div>
     <h1>Locataires </h1>
-    <ion-list>
+    <ion-list *ngIf="users.length">
 
-      <ion-item>
-        <h2>Sébastien Martin</h2>
-        <p class="detailsAddress">sebmartinus@gmail.com</p>
-        <p class="address">079 467 07 05</p>
-        <button ion-button clear item-right color="red"><ion-icon name="ios-trash-outline" class="trashIcon"></ion-icon></button>
+      <ion-item *ngFor="let user of users">
+        <h2>{{user.lastname}} {{user.firstname}}</h2>
+        <p class="detailsAddress">{{user.email}}</p>
+        <p class="address">{{user.private_phone}} | {{user.public_phone}}</p>
+        <button ion-button clear item-right color="red" (click)="deleteUser(user)"><ion-icon name="ios-trash-outline" class="trashIcon"></ion-icon></button>
       </ion-item>
 
     </ion-list>
-    <button class="addButton"><ion-icon name="add"></ion-icon></button>
+    <button class="addButton" (click)="showSearchUser()"><ion-icon name="add"></ion-icon></button>
   </div>
 
   <div class="lotsContainer">
     <h1>Lots </h1>
-    <button class="addButton"><ion-icon name="add"></ion-icon></button>
+    <button class="addButton" (click)="showSearchLot()"><ion-icon name="add"></ion-icon></button>
   </div>
 
-  <button class="submitButton">Terminer</button>
+  <button class="submitButton" (click)="confirm()">Terminer</button>
 </ion-content>

@@ -15,11 +15,14 @@ import { ShowFormPage } from '../pages/show-form/show-form';
 import { ItemGalleryPage } from '../pages/item-gallery/item-gallery';
 import { NewStatePage } from '../pages/new-state/new-state';
 import { SearchUserPage } from '../pages/search-user/search-user';
+import { SearchLotPage } from '../pages/search-lot/search-lot';
 
 import { FormsProvider } from '../providers/forms/forms';
 import { SafeHtmlPipe } from '../pipes/safe-html/safe-html';
 import { SafeUrlPipe } from '../pipes/safe-url/safe-url';
 import { NewFormProvider } from '../providers/new-form/new-form';
+import { UsersProvider } from '../providers/users/users';
+import { LotsProvider } from '../providers/lots/lots';
 
 @NgModule({
   declarations: [
@@ -29,6 +32,7 @@ import { NewFormProvider } from '../providers/new-form/new-form';
     ItemGalleryPage,
     NewStatePage,
     SearchUserPage,
+    SearchLotPage,
     SafeHtmlPipe,
     SafeHtmlPipe,
     SafeUrlPipe,
@@ -47,6 +51,7 @@ import { NewFormProvider } from '../providers/new-form/new-form';
     ItemGalleryPage,
     NewStatePage,
     SearchUserPage,
+    SearchLotPage,
   ],
   providers: [
     StatusBar,
@@ -56,6 +61,8 @@ import { NewFormProvider } from '../providers/new-form/new-form';
     FormsProvider,
     HttpService,
     NewFormProvider,
+    UsersProvider,
+    LotsProvider,
   ]
 })
 export class AppModule {}

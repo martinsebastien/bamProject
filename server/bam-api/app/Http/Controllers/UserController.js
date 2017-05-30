@@ -1,10 +1,11 @@
 'use strict'
+const User = use('App/Model/User')
 
 class UserController {
 
   * index(request, response) {
     const allUser = yield User.all()
-
+    console.log(allUser)
     yield response
       .json(allUser)
       .catch('Something went wrong with indexing the users')
