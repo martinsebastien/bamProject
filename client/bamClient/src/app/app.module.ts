@@ -13,9 +13,13 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { ShowFormPage } from '../pages/show-form/show-form';
 import { ItemGalleryPage } from '../pages/item-gallery/item-gallery';
+import { NewStatePage } from '../pages/new-state/new-state';
+import { SearchUserPage } from '../pages/search-user/search-user';
+
 import { FormsProvider } from '../providers/forms/forms';
 import { SafeHtmlPipe } from '../pipes/safe-html/safe-html';
 import { SafeUrlPipe } from '../pipes/safe-url/safe-url';
+import { NewFormProvider } from '../providers/new-form/new-form';
 
 @NgModule({
   declarations: [
@@ -23,6 +27,8 @@ import { SafeUrlPipe } from '../pipes/safe-url/safe-url';
     HomePage,
     ShowFormPage,
     ItemGalleryPage,
+    NewStatePage,
+    SearchUserPage,
     SafeHtmlPipe,
     SafeHtmlPipe,
     SafeUrlPipe,
@@ -39,6 +45,8 @@ import { SafeUrlPipe } from '../pipes/safe-url/safe-url';
     HomePage,
     ShowFormPage,
     ItemGalleryPage,
+    NewStatePage,
+    SearchUserPage,
   ],
   providers: [
     StatusBar,
@@ -47,6 +55,7 @@ import { SafeUrlPipe } from '../pipes/safe-url/safe-url';
     {provide: LOCALE_ID, useValue: "fr-FR"},
     FormsProvider,
     HttpService,
+    NewFormProvider,
   ]
 })
 export class AppModule {}

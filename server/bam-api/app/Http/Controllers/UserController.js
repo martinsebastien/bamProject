@@ -1,15 +1,13 @@
 'use strict'
-const Building = use('App/Model/Building')
 
-class BuildingsController {
+class UserController {
 
   * index(request, response) {
-    //
-    const allBuilding = yield Building.all()
+    const allUser = yield User.all()
 
     yield response
-      .json(allBuilding)
-      .catch('Something went wrong with indexing the buildings')
+      .json(allUser)
+      .catch('Something went wrong with indexing the users')
   }
 
   * create(request, response) {
@@ -38,4 +36,4 @@ class BuildingsController {
 
 }
 
-module.exports = BuildingsController
+module.exports = UserController

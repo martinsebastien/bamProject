@@ -14,7 +14,7 @@ class LotsController {
 
     yield response
       .json(allLots)
-      .catch('Something went wrong with indexing the forms')
+      .catch('Something went wrong with indexing the lots')
   }
 
   * create(request, response) {

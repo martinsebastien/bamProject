@@ -85,7 +85,7 @@
             <span class="contentItems italic">{{item.statu}}</span>
             <p class="contentItems bold">Remarques (nombre, année) :</p>
             <p class="contentItems" *ngIf="item.comment">{{item.comment}}</p>
-            <button ion-button clear item-right color="secondary" *ngIf="item.pictures.length"><ion-icon name="ios-image-outline" class="photoIcon"></ion-icon></button>
+            <button ion-button clear item-right color="secondary" *ngIf="item.pictures.length" (click)="showPictures(item.pictures)"><ion-icon name="ios-image-outline" class="photoIcon"></ion-icon></button>
           </ion-item>
         </div>
 

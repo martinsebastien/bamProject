@@ -11,7 +11,7 @@ class FloorsController {
 
     yield response
       .json(allFloors)
-      .catch('Something went wrong with indexing the forms')
+      .catch('Something went wrong with indexing the floors')
   }
 
   * create(request, response) {

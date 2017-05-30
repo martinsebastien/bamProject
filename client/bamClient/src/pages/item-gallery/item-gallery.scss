@@ -5,6 +5,10 @@ page-item-gallery {
 
     ion-slide {
         background: black;
+
+        img {
+            padding: 5px;
+        }
     }
 
     .content-ios {

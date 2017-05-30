@@ -1,0 +1,89 @@
+page-new-state {
+    .scroll-content {
+        padding: 16px 0px 16px 0px !important;
+    }
+
+    .detailsAddress {
+        font-style: italic;
+        font-size: 0.7em;
+    }
+
+    .item-inner {
+        margin-right: 16px;
+        padding-right: 0px;
+    }
+
+    .address {
+        color: rgba(0,0,0,0.7) !important;
+    }
+
+    .secondary {
+        background-color: #69F0AE !important;
+    }
+
+    h1 {
+        color: #69F0AE !important;
+        font-size: 1.6rem !important;
+        font-family: 'roboto' !important;
+        font-weight: 700 !important;
+        border: solid 1px #69F0AE;
+        padding: 13px;
+        border-radius: 5px;
+        width: 50%;
+        text-align: center;
+        margin: 0 auto;
+        margin-bottom: 10px;
+    }
+
+    .lotsContainer {
+        margin-top: 35px;
+    }
+
+    .list-ios > .item-block:first-child {
+        border-top: none;
+    }
+
+    .list-ios > .item-block:last-child, .list-ios > .item-wrapper:last-child .item-block{
+        border-bottom: none !important;
+    }
+
+    .addButton {
+        padding: 12px;
+        border-radius: 50px;
+        width: 40px;
+        color: white;
+        background: #69F0AE !important;
+        display: block;
+        margin: 0 auto;
+        margin-bottom: 15px;
+
+        ion-icon{
+            font-size: 1.5em;
+        }
+    }
+
+    ion-list {
+        margin-bottom: 15px !important;
+    }
+
+    .submitButton {
+        padding: 20px;
+        width: 100%;
+        color: white;
+        background: #69F0AE !important;
+        display: block;
+        margin: 0 auto;
+        margin-top: 35px;
+        margin-bottom: 15px;
+        font-size: 1.5rem;
+        text-transform: uppercase;
+        font-weight: 700;
+        font-family: 'roboto';
+    }
+
+    .trashIcon {
+        color: red !important;
+        font-size: 2.2em !important;
+    }
+
+}
