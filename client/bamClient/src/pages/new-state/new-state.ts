@@ -3,9 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { NewFormProvider } from '../../providers/new-form/new-form';
 import { AlertController } from 'ionic-angular';
 import { ToastController } from 'ionic-angular';
-
-import { Observable } from 'rxjs';
-import 'rxjs/add/operator/map';
+import { FormsProvider } from '../../providers/forms/forms';
 
 import { SearchUserPage } from '../search-user/search-user';
 import { SearchLotPage } from '../search-lot/search-lot';
@@ -26,6 +24,7 @@ export class NewStatePage {
     public newForm: NewFormProvider,
     public alertCtrl: AlertController,
     public toastCtrl: ToastController,
+    public formsProvider: FormsProvider,
     ) {}
 
   ionViewDidLoad() {
@@ -66,6 +65,7 @@ export class NewStatePage {
           text: 'Créer',
           handler: () => {
             this.presentToast(`Formulaire d'état des lieux créé avec succès !`);
+            this.newForm.build()
             this.navCtrl.pop();
             this.newForm.resetData();
           }

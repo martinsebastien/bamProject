@@ -1,7 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 import 'rxjs/add/operator/map';
+
 import { ToastController } from 'ionic-angular';
+
+import { HttpService } from '../../services/http.service';
 
 @Injectable()
 export class NewFormProvider {
@@ -11,6 +14,7 @@ export class NewFormProvider {
 
   constructor(
     public toastCtrl: ToastController,
+    public httpService: HttpService,
   ) { }
 
   public addUser(user) {
@@ -37,7 +41,6 @@ export class NewFormProvider {
     for (let i = 0; i < this.lots.length; i++) {
       this.lots[i].id == lot.id ? isPresent = true : console.log(lot);
     }
-
     !isPresent ? this.lots.push(lot) : this.presentToast('Lot déjà sélectionné');
   }
 
@@ -51,6 +54,17 @@ export class NewFormProvider {
     })
   }
 
+  public build(): Subscription {
+    let new_form = {
+      users: [],
+      lots: []
+    };
+    new_form.users = this.users;
+    new_form.lots = this.lots;
+    return this.httpService
+      .post('forms', new_form)
+      .subscribe();
+  }
 
   public resetData() {
     this.lots = [];

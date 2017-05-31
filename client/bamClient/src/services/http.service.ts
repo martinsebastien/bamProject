@@ -18,7 +18,7 @@ export class HttpService {
         return this.request(RequestMethod.Get, url, null, options)
     }
 
-    public post(url: string, body: string, options?: RequestOptionsArgs): Observable<Response> {
+    public post(url: string, body: any, options?: RequestOptionsArgs): Observable<Response> {
         return this.request(RequestMethod.Post, url, body, options)
     }
 
@@ -38,7 +38,7 @@ export class HttpService {
         return this.request(RequestMethod.Head, url, null, options)
     }
 
-    private request(method: RequestMethod, url: string, body?: string, options?: RequestOptionsArgs): Observable<Response> {
+    private request(method: RequestMethod, url: string, body?: any, options?: RequestOptionsArgs): Observable<Response> {
         let requestOptions = new RequestOptions(Object.assign({ method, body, url: this.buildUrl(url)}, options))
 
         return this.http.request(new Request(requestOptions))

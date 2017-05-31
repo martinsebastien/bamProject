@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
+import { NewFormProvider } from '../../providers/new-form/new-form';
 
 import { HttpService } from '../../services/http.service';
 import 'rxjs/add/operator/map';
@@ -12,6 +14,7 @@ export class FormsProvider {
 
   constructor(
     public httpService: HttpService,
+    public newForm: NewFormProvider,
     ) {}
 
     all(): Observable<User[]> {
@@ -26,5 +29,11 @@ export class FormsProvider {
         .get(`forms/${id}`)
         .map(data => data.json())
         .map(form => Form.build(form))
+    }
+
+    create(object): Subscription {
+      return this.httpService
+        .post(`forms`, object)
+        .subscribe();
     }
 }

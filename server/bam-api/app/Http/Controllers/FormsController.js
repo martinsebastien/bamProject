@@ -165,7 +165,8 @@ class FormsController {
         //If there is a previous state we have to generate a new state based on the old one.
         //If there is no previous state, create a new one based on a template
         //we receive an array of user id and an array of lot id
-        const lots = JSON.parse(request.all().lots)
+        console.log(request.all().users);
+       /* const lots = JSON.parse(request.all().lots)
         const users = JSON.parse(request.all().users)
         const firstLot = yield Lot.find(lots[0])
         const genderEnter = yield Gender.find(1)
@@ -219,10 +220,10 @@ class FormsController {
             for (let room in rooms) {
                 room = rooms[room]
             }
-        }
+        }*/
 
         yield response
-            .json(lots)
+            .json({'ok': 'ok'})
             .catch('Something went wrong with the generation of the form')
     }
 
