@@ -21,7 +21,7 @@
         <h2>{{user.lastname}} {{user.firstname}}</h2>
         <p class="detailsAddress">{{user.email}}</p>
         <p class="address">{{user.private_phone}} | {{user.public_phone}}</p>
-        <button ion-button clear item-right color="red" (click)="deleteUser(user)"><ion-icon name="ios-trash-outline" class="trashIcon"></ion-icon></button>
+        <button ion-button clear item-right color="red" (click)="confirmDeleteUser(user)"><ion-icon name="ios-trash-outline" class="trashIcon"></ion-icon></button>
       </ion-item>
 
     </ion-list>
@@ -38,7 +38,7 @@
         <p class="address">{{lot.line}}</p>
         <p class="address">{{lot.street}} {{lot.address_number}}</p>
         <p class="address">{{lot.npa}} {{lot.city}}</p>
-        <button ion-button clear item-right color="red" (click)="deleteLot(lot)"><ion-icon name="ios-trash-outline" class="trashIcon"></ion-icon></button>
+        <button ion-button clear item-right color="red" (click)="confirmDeleteLot(lot)"><ion-icon name="ios-trash-outline" class="trashIcon"></ion-icon></button>
       </ion-item>
 
     </ion-list>

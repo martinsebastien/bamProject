@@ -75,6 +75,50 @@ export class NewStatePage {
     confirm.present();
   }
 
+  public confirmDeleteLot(lot) {
+    let confirm = this.alertCtrl.create({
+      title: 'Confirmation de suppression',
+      message: `Êtes-vous certain de vouloir retirer ce Lot ?`,
+      buttons: [
+        {
+          text: 'Annuler',
+          handler: () => {
+            this.presentToast('Action annulée');
+          }
+        },
+        {
+          text: 'Supprimer',
+          handler: () => {
+            this.deleteLot(lot);
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
+
+  public confirmDeleteUser(user) {
+    let confirm = this.alertCtrl.create({
+      title: 'Confirmation de suppression',
+      message: `Êtes-vous certain de vouloir retirer ce locataire ?`,
+      buttons: [
+        {
+          text: 'Annuler',
+          handler: () => {
+            this.presentToast('Action annulée');
+          }
+        },
+        {
+          text: 'Supprimer',
+          handler: () => {
+            this.deleteUser(user);
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
+
   public presentToast(text) {
     let toast = this.toastCtrl.create({
       message: text,
