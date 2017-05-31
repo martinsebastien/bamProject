@@ -17,15 +17,6 @@
 
   <ion-searchbar (ionInput)="getLots($event)"></ion-searchbar>
 
-  <div class="loadingBlock" *ngIf="!currentLots.length">
-    <div>
-      <h2>Chargement des données en cours</h2>
-      <p>Ce processus peut prendre quelques secondes ...</p>
-      <p>Si ce chargement venait à durer trop longtemps, pensez à vérifier votre connexion internet</p>
-      <ion-spinner></ion-spinner>
-    </div>
-  </div>
-
   <ion-list *ngIf="currentLots.length">
 
     <ion-item *ngFor="let lot of currentLots">

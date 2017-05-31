@@ -44,7 +44,7 @@ export class SearchLotPage {
 
     if (this.searchTerm && this.searchTerm.trim() != '') {
       this.currentLots = this.currentLots.filter((lot) => {
-        return (lot.number == parseInt(this.searchTerm) || lot.lot_type.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1 || lot.floor == parseInt(this.searchTerm) || lot.building_name.trim().indexOf(this.searchTerm.trim()) > -1 || lot.address_number.trim().indexOf(this.searchTerm.trim()) > -1 || lot.line.trim().indexOf(this.searchTerm.trim()) > -1 || lot.street.trim().indexOf(this.searchTerm.trim()) > -1 || lot.city.trim().indexOf(this.searchTerm.trim()) > -1 || lot.npa == parseInt(this.searchTerm))
+        return (lot.number == parseInt(this.searchTerm) || lot.lot_type.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1 || lot.floor == parseInt(this.searchTerm) || lot.building_name.trim().toLowerCase().indexOf(this.searchTerm.trim().toLowerCase()) > -1 || lot.address_number.trim().indexOf(this.searchTerm.trim()) > -1 || lot.line.trim().toLowerCase().indexOf(this.searchTerm.trim().toLowerCase()) > -1 || lot.street.trim().toLowerCase().indexOf(this.searchTerm.trim().toLowerCase()) > -1 || lot.city.trim().toLowerCase().indexOf(this.searchTerm.trim().toLowerCase()) > -1 || lot.npa == parseInt(this.searchTerm))
       })
     }
   }
