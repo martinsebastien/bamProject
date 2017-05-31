@@ -165,6 +165,12 @@ class FormsController {
         //If there is a previous state we have to generate a new state based on the old one.
         //If there is no previous state, create a new one based on a template
         //we receive an array of user id and an array of lot id
+        const users = request.all().users
+        const lots = request.all().lots
+        if (!users.length || !lots.length) {
+            return response
+                    .json({'error': 'Afin de créer un nouvel état des lieux il est nécessaire d\'avoir au moins un locataire et un lot'})
+        }
         console.log(request.all().users);
        /* const lots = JSON.parse(request.all().lots)
         const users = JSON.parse(request.all().users)

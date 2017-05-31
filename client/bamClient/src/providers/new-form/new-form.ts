@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map';
 
 import { ToastController } from 'ionic-angular';
 
-import { HttpService } from '../../services/http.service';
+import { FormsProvider } from '../../providers/forms/forms';
 
 @Injectable()
 export class NewFormProvider {
@@ -14,7 +14,7 @@ export class NewFormProvider {
 
   constructor(
     public toastCtrl: ToastController,
-    public httpService: HttpService,
+    public formsProvider: FormsProvider,
   ) { }
 
   public addUser(user) {
@@ -54,16 +54,15 @@ export class NewFormProvider {
     })
   }
 
-  public build(): Subscription {
+  public build(): Observable<any> {
     let new_form = {
       users: [],
       lots: []
     };
     new_form.users = this.users;
     new_form.lots = this.lots;
-    return this.httpService
-      .post('forms', new_form)
-      .subscribe();
+    return this.formsProvider
+      .create(new_form);
   }
 
   public resetData() {

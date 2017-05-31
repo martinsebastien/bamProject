@@ -4,6 +4,8 @@ import { NewFormProvider } from '../../providers/new-form/new-form';
 import { AlertController } from 'ionic-angular';
 import { ToastController } from 'ionic-angular';
 import { FormsProvider } from '../../providers/forms/forms';
+import { Observable } from 'rxjs';
+import { Subscription } from 'rxjs';
 
 import { SearchUserPage } from '../search-user/search-user';
 import { SearchLotPage } from '../search-lot/search-lot';
@@ -19,13 +21,13 @@ export class NewStatePage {
   public lots = [];
 
   constructor(
-    public navCtrl: NavController, 
+    public navCtrl: NavController,
     public navParams: NavParams,
     public newForm: NewFormProvider,
     public alertCtrl: AlertController,
     public toastCtrl: ToastController,
     public formsProvider: FormsProvider,
-    ) {}
+  ) { }
 
   ionViewDidLoad() {
     this.users = this.newForm.getUsers();
@@ -64,10 +66,15 @@ export class NewStatePage {
         {
           text: 'Créer',
           handler: () => {
-            this.presentToast(`Formulaire d'état des lieux créé avec succès !`);
-            this.newForm.build()
-            this.navCtrl.pop();
-            this.newForm.resetData();
+            this.newForm.build().subscribe(data => {
+              if (data.error) {
+                this.presentToast(data.error)
+              } else {
+                this.presentToast(data.response)
+                this.navCtrl.pop();
+                this.newForm.resetData();
+              }
+            });
           }
         }
       ]
