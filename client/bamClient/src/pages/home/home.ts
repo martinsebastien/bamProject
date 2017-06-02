@@ -7,6 +7,7 @@ import { FormsProvider } from '../../providers/forms/forms';
 
 import { ShowFormPage } from '../show-form/show-form';
 import { NewStatePage } from '../new-state/new-state';
+import { CompleteFormPage } from '../complete-form/complete-form';
 
 @Component({
   selector: 'page-home',
@@ -49,6 +50,10 @@ export class HomePage {
 
     showForm({ form_id }: User): void {
       this.navCtrl.push(ShowFormPage, { form_id });
+    }
+
+    completeForm(): void {
+      this.navCtrl.push(CompleteFormPage);
     }
 
     createNew():void {

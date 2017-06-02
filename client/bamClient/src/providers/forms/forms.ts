@@ -21,6 +21,13 @@ export class FormsProvider {
         .map(users => users.map(user => User.build(user)));
     }
 
+    allNotComplete(): Observable<User[]> {
+      return this.httpService
+        .get('forms?completed=false')
+        .map(data => data.json())
+        .map(users => users.map(user => User.build(user)));
+    }
+
     get(id: string): Observable<any> {
       return this.httpService
         .get(`forms/${id}`)

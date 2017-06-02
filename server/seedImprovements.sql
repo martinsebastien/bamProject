@@ -30,5 +30,7 @@ update signatures set image = 'data:image/jpeg;base64,/9j/4QAYRXhpZgAASUkqAAgAAA
 ';
 update signatures set form_id = 1 where id = 2;
 
+/*insert into genders (name) values ('Etat des lieux: Sortie');*/
+
 
 select * from lots;

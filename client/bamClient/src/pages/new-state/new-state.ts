@@ -4,9 +4,6 @@ import { NewFormProvider } from '../../providers/new-form/new-form';
 import { AlertController } from 'ionic-angular';
 import { ToastController } from 'ionic-angular';
 import { FormsProvider } from '../../providers/forms/forms';
-import { Observable } from 'rxjs';
-import { Subscription } from 'rxjs';
-
 import { SearchUserPage } from '../search-user/search-user';
 import { SearchLotPage } from '../search-lot/search-lot';
 

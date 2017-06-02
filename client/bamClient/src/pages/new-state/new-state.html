@@ -13,37 +13,39 @@
 </ion-header>
 
 <ion-content padding>
-  <div>
-    <h1>Locataires </h1>
-    <ion-list *ngIf="users.length">
+  <div class="containerBody">
+    <div>
+      <h1>Locataires </h1>
+      <ion-list *ngIf="users.length">
 
-      <ion-item *ngFor="let user of users">
-        <h2>{{user.lastname}} {{user.firstname}}</h2>
-        <p class="detailsAddress">{{user.email}}</p>
-        <p class="address">{{user.private_phone}} | {{user.public_phone}}</p>
-        <button ion-button clear item-right color="red" (click)="confirmDeleteUser(user)"><ion-icon name="ios-trash-outline" class="trashIcon"></ion-icon></button>
-      </ion-item>
+        <ion-item *ngFor="let user of users">
+          <h2>{{user.lastname}} {{user.firstname}}</h2>
+          <p class="detailsAddress">{{user.email}}</p>
+          <p class="address">{{user.private_phone}} | {{user.public_phone}}</p>
+          <button ion-button clear item-right color="red" (click)="confirmDeleteUser(user)"><ion-icon name="ios-trash-outline" class="trashIcon"></ion-icon></button>
+        </ion-item>
 
-    </ion-list>
-    <button class="addButton" (click)="showSearchUser()"><ion-icon name="add"></ion-icon></button>
-  </div>
+      </ion-list>
+      <button class="addButton" (click)="showSearchUser()"><ion-icon name="add"></ion-icon></button>
+    </div>
 
-  <div class="lotsContainer">
-    <h1>Lots </h1>
-    <ion-list *ngIf="lots.length">
+    <div class="lotsContainer">
+      <h1>Lots </h1>
+      <ion-list *ngIf="lots.length">
 
-      <ion-item *ngFor="let lot of lots">
-        <h2>{{lot.lot_type}} {{lot.number}}</h2>
-        <p class="detailsAddress">Immeuble {{lot.building_name}} - Etage {{lot.floor}}</p>
-        <p class="address">{{lot.line}}</p>
-        <p class="address">{{lot.street}} {{lot.address_number}}</p>
-        <p class="address">{{lot.npa}} {{lot.city}}</p>
-        <button ion-button clear item-right color="red" (click)="confirmDeleteLot(lot)"><ion-icon name="ios-trash-outline" class="trashIcon"></ion-icon></button>
-      </ion-item>
+        <ion-item *ngFor="let lot of lots">
+          <h2>{{lot.lot_type}} {{lot.number}}</h2>
+          <p class="detailsAddress">Immeuble {{lot.building_name}} - Etage {{lot.floor}}</p>
+          <p class="address">{{lot.line}}</p>
+          <p class="address">{{lot.street}} {{lot.address_number}}</p>
+          <p class="address">{{lot.npa}} {{lot.city}}</p>
+          <button ion-button clear item-right color="red" (click)="confirmDeleteLot(lot)"><ion-icon name="ios-trash-outline" class="trashIcon"></ion-icon></button>
+        </ion-item>
 
-    </ion-list>
+      </ion-list>
 
-    <button class="addButton" (click)="showSearchLot()"><ion-icon name="add"></ion-icon></button>
+      <button class="addButton" (click)="showSearchLot()"><ion-icon name="add"></ion-icon></button>
+    </div>
   </div>
 
   <button class="submitButton" (click)="confirm()">Terminer</button>

@@ -16,6 +16,9 @@ import { ItemGalleryPage } from '../pages/item-gallery/item-gallery';
 import { NewStatePage } from '../pages/new-state/new-state';
 import { SearchUserPage } from '../pages/search-user/search-user';
 import { SearchLotPage } from '../pages/search-lot/search-lot';
+import { CompleteFormPage } from '../pages/complete-form/complete-form';
+import { EditFormPage } from '../pages/edit-form/edit-form';
+import { EditRoomPage } from '../pages/edit-room/edit-room';
 
 import { FormsProvider } from '../providers/forms/forms';
 import { SafeHtmlPipe } from '../pipes/safe-html/safe-html';
@@ -33,7 +36,9 @@ import { LotsProvider } from '../providers/lots/lots';
     NewStatePage,
     SearchUserPage,
     SearchLotPage,
-    SafeHtmlPipe,
+    CompleteFormPage,
+    EditFormPage,
+    EditRoomPage,
     SafeHtmlPipe,
     SafeUrlPipe,
   ],
@@ -52,6 +57,9 @@ import { LotsProvider } from '../providers/lots/lots';
     NewStatePage,
     SearchUserPage,
     SearchLotPage,
+    CompleteFormPage,
+    EditFormPage,
+    EditRoomPage,
   ],
   providers: [
     StatusBar,

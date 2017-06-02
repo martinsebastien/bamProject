@@ -13,6 +13,7 @@ const Form = use('App/Model/Form')
 const Gender = use('App/Model/Gender')
 const Lot = use('App/Model/Lot')
 const Room = use('App/Model/Room')
+const Item = use('App/Model/Item')
 const Type = use('App/Model/Type')
 const Contract = use('App/Model/Contract')
 
@@ -163,90 +164,134 @@ class FormsController {
     * store(request, response) {
         //Create a new state 
         //If there is a previous state we have to generate a new state based on the old one.
-        //If there is no previous state, create a new one based on a template
-        //we receive an array of user id and an array of lot id
-        const users = request.all().users
-        const lots = request.all().lots
-        if (!users.length || !lots.length) {
+        //we receive an array of user and an array of lot
+        const _users = request.all().users
+        const _lots = request.all().lots
+        if (!_users.length || !_lots.length) {
             return response
-                    .json({'error': 'Afin de créer un nouvel état des lieux il est nécessaire d\'avoir au moins un locataire et un lot'})
+                .json({ 'error': 'Action impossible: Afin de créer un nouvel état des lieux il est nécessaire d\'avoir au moins un locataire et un lot' })
+                .catch('Something went wrong')
         }
-        console.log(request.all().users);
-       /* const lots = JSON.parse(request.all().lots)
-        const users = JSON.parse(request.all().users)
-        const firstLot = yield Lot.find(lots[0])
-        const genderEnter = yield Gender.find(1)
-        const genderExit = yield Gender.find(2)
+        const lots_id = _lots.map(lot => lot.id)
+        const users_id = _users.map(user => user.id)
 
-        //We create a new form
-        const form = new Form()
-        form.date = new Date()
-        form.completed = false
-        yield form.save()
+        const oldFormsUncomplete = yield Database
+            .raw('select * from forms inner join contracts on contracts.form_id = forms.id inner join lots on lots.id = contracts.lot_id where lots.id in (?)', lots_id.join(', '))
 
-        const lastContractQuery = yield Database
-            .raw('select * from lots inner join contracts on contracts.lot_id = lots.id inner join forms on forms.id = contracts.form_id where lot_id = ? and (forms.gender_id = ? or forms.gender_id = ?) order by forms.created_at desc limit 1', [lots[0], 1, 2])
-        const lastContract = yield Contract.find(lastContractQuery[0][0].id)
-        const lastForm = yield lastContract.form().fetch()
-
-        //Depending on if the form of the last contract is an exit or enter form
-        if (lastForm) {
-            console.log(lastForm.gender_id)
-            lastForm.gender_id == 1 ? yield genderExit.forms().save(form) : yield genderEnter.forms().save(form)
+        for (let o = 0; o < oldFormsUncomplete[0].length; o++) {
+            const oldForm = oldFormsUncomplete[0][o]
+            if (!oldForm.completed) {
+                return response
+                    .json({ 'error': 'Action impossible: Il existe un état des lieux non complété pour un ou plusieurs des lots sélectionnés.' })
+                    .catch('Something went wrong')
+            }
+            console.log(oldForm.completed)
         }
 
-        //For all the lots selected for the state
-        for (let i = 0; i < lots.length; i++) {
-            const _id = lots[i]
+        console.log(oldFormsUncomplete[0][0])
+
+        const firstUser = yield User.find(_users[0].id)
+        const firstLot = yield Lot.find(_lots[0].id)
+        const firstFloor = yield Floor.find(firstLot.floor_id)
+        const firstBuilding = yield Building.find(firstFloor.building_id)
+        const firstAddress = yield Address.find(firstBuilding.addres_id)
+        const firstStreet = yield Street.find(firstAddress.street_id)
+        const firstCity = yield City.find(firstStreet.city_id)
+        const rawGender = yield this.checkLastForm(_lots[0].id)
+
+        const _gender = rawGender[0][0] ? rawGender[0][0].gender_id : -1
+
+        const newGender = _gender == 2 ? 1 : 2
+
+        let ref_supp = ''
+        let ref_number = []
+        let newLots = []
+
+
+        let newForm = yield Form.create({
+            city_id: firstCity.id,
+            gender_id: newGender,
+            completed: false
+        })
+
+        let existMain = false;
+        for (let l = 0; l < lots_id.length; l++) {
+            const _id = lots_id[l]
             const lot = yield Lot.find(_id)
-            const rooms = yield Room.query().where('lot_id', _id)
-            const floor = yield Floor.find(lot.floor_id)
-            const type = yield Type.find(lot.type_id)
-            const building = yield Building.find(floor.building_id)
-            const newLot = new Lot()
-            newLot.number = lot.number
-            yield newLot.save()
 
-            //For all users/tenant for the form
-            for (let j = 0; j < users.length; j++) {
-                const user = yield User.find(users[j])
+            lot.main_home ? existMain = true : existMain;
 
-                //We create a new contract in any case
-                const contract = new Contract()
-                form.gender_id == 0 ? contract.reference_number = `${users[0].name[0]}${users[0].firstname[0]}-${building.name}-${contract.id}` : contract.reference_number = lastContract.reference_number
-                yield newLot.contracts().save(contract)
-                yield form.contracts().save(contract)
-                yield user.contracts().save(contract)
-                yield contract.save()
+            let newLot = yield Lot.create({
+                type_id: lot.type_id,
+                floor_id: lot.floor_id,
+                main_home: lot.main_home,
+                number: lot.number
+            })
+
+            newLots.push(newLot)
+
+            for (let u = 0; u < users_id.length; u++) {
+                let newContract = yield Contract.create({
+                    lot_id: newLot.id,
+                    user_id: users_id[u],
+                    form_id: newForm.id
+                })
+                ref_number.push(newContract.id)
+                ref_supp = ref_number[0]
+                let reference_number = `${firstUser.name.substring(0, 3).toUpperCase()}-${firstBuilding.name.substring(0, 3).toUpperCase()}-${ref_supp}`
+                newContract.reference_number = reference_number
+                yield newContract.save()
+                console.log(newContract.reference_number)
             }
 
-            yield floor.lots().save(newLot)
-            yield type.lots().save(newLot)
+            const _rooms = yield Database
+                .raw('select * from rooms where rooms.lot_id = ?', lot.id)
 
-            for (let room in rooms) {
-                room = rooms[room]
+            for (let r = 0; r < _rooms[0].length; r++) {
+                const room = _rooms[0][r]
+
+                let newRoom = yield Room.create({
+                    name: room.name,
+                    lot_id: newLot.id,
+                    number: room.number
+                })
+
+                const _items = yield Database
+                    .raw('select * from items where items.room_id = ?', room.id)
+
+                for (let i = 0; i < _items[0].length; i++) {
+                    const item = _items[0][i]
+
+                    let newItem = yield Item.create({
+                        name: item.name,
+                        room_id: newRoom.id,
+                        number: item.number,
+                        comment: item.comment,
+                        matter: item.matter,
+                        statu_id: item.statu_id
+                    })
+                }
             }
-        }*/
+        }
+
+        !existMain ? newLots[0].main_home = true : existMain
+
+        const lots = yield Database
+            .raw('select * from lots inner join rooms on rooms.lot_id = lots.id inner join items on items.room_id = rooms.id where lots.id in (?)', lots_id.join(", "))
 
         yield response
-            .json({'ok': 'ok'})
+            .json({ 'response': 'Etat des lieux créé avec succès !' })
             .catch('Something went wrong with the generation of the form')
     }
 
-    //The two functions below are used to prefill fields for the state (all rooms and items for a given lot)
-    createStateAccordingToOldOne(contract) {
-        return this
-    }
-
-    createBrandNewState(contract) {
-        const enterState = Gender.find(0)
-
-        return this
+    checkLastForm(lotId) {
+        const lastForm = Database
+            .raw('select forms.gender_id from contracts inner join forms on forms.id = contracts.form_id where contracts.lot_id = ? and (forms.gender_id = 1 or forms.gender_id = 2) order by forms.created_at desc limit 1', lotId)
+        return lastForm
     }
 
     requestUsers(role, completed) {
         let base = Database
-            .debug()
             .select('users.name as name', 'users.id', 'users.firstname', 'users.email', 'users.private_phone', 'users.public_phone', 'contracts.form_id', 'floors.number as floor', 'lots.number as flat_number', 'addresses.number as street_number', 'line', 'npa', 'cities.name as city')
             .from('users')
             .innerJoin('contracts', 'contracts.user_id', 'users.id')

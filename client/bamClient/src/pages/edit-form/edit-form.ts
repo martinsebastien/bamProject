@@ -8,10 +8,10 @@ import { FormsProvider } from '../../providers/forms/forms';
 
 @IonicPage()
 @Component({
-  selector: 'page-show-form',
-  templateUrl: 'show-form.html',
+  selector: 'page-edit-form',
+  templateUrl: 'edit-form.html',
 })
-export class ShowFormPage {
+export class EditFormPage {
 
   private usersSubscription: Subscription;
   public form: Form;

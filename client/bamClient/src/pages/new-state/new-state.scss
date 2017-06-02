@@ -1,6 +1,6 @@
 page-new-state {
     .scroll-content {
-        padding: 16px 0px 16px 0px !important;
+        padding: 16px 0px 0px 0px !important;
     }
 
     .detailsAddress {
@@ -74,7 +74,7 @@ page-new-state {
         display: block;
         margin: 0 auto;
         margin-top: 35px;
-        margin-bottom: 15px;
+        margin-bottom: 0px;
         font-size: 1.5rem;
         text-transform: uppercase;
         font-weight: 700;
@@ -84,6 +84,9 @@ page-new-state {
     .trashIcon {
         color: red !important;
         font-size: 2.2em !important;
+    }
+    .containerBody {
+        min-height: calc(100% - 85px);
     }
 
 }

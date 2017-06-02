@@ -1,0 +1,143 @@
+<!--
+  Generated template for the EditFormPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title *ngIf="form">{{form.gender}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <div class="loadingBlock" *ngIf="!form">
+    <div>
+      <h2>Chargement des données en cours</h2>
+      <p>Ce processus peut prendre quelques secondes ...</p>
+      <ion-spinner></ion-spinner>
+    </div>
+  </div>
+
+  <ion-list *ngIf="form">
+
+    <div class="containerInfo">
+      <ion-card-header>
+        Général
+      </ion-card-header>
+      <ion-item>
+        <h3 class="titleItems">Référence de dossier : </h3>
+        <span class="contentItems">{{form.reference_number}}</span>
+      </ion-item>
+      <ion-item>
+        <h3 class="titleItems">Locataires : </h3>
+        <div class="tenantsBlock" *ngFor="let user of form.users">
+          <div *ngIf="user.role == 2">
+            <p class="contentItems bold">{{user.firstname}} {{user.lastname}}</p>
+            <p class="contentItems italic">{{user.private_phone || user.public_phone}}</p>
+            <p class="contentItems">{{user.email}}</p>
+          </div>
+        </div>
+      </ion-item>
+      <ion-item *ngIf="form.building.code">
+        <h3 class="titleItems">Code porte d'entrée : </h3>
+        <span class="contentItems">{{form.building.code}}</span>
+      </ion-item>
+      <ion-item>
+        <h3 class="titleItems">Etage : </h3>
+        <span class="contentItems">{{form.floor}}</span>
+      </ion-item>
+      <ion-item>
+        <h3 class="titleItems">Numéro d'appartement : </h3>
+        <span class="contentItems">{{form.flat_number}}</span>
+      </ion-item>
+      <ion-item>
+        <h3 class="titleItems">Nombre de pièces : </h3>
+        <span class="contentItems">{{countRooms(form.lots)}}</span>
+      </ion-item>
+      <ion-item>
+        <h3 class="titleItems">Adresse : </h3>
+        <p class="contentItems">{{form.building.address.line}}</p>
+        <p class="contentItems">{{form.building.address.street}} {{form.building.address.number}}</p>
+        <p class="contentItems">{{form.building.address.npa}} {{form.building.address.city}}</p>
+      </ion-item>
+    </div>
+
+    <div *ngFor="let lot of form.lots">
+      <div *ngIf="lot.main_home">
+        <div class="containerInfo" *ngFor="let room of lot.rooms">
+          <ion-card-header>
+            {{room.name}}
+          </ion-card-header>
+          <ion-item *ngFor="let item of room.items">
+            <h3 class="titleItems">{{item.name}} : </h3><br>
+            <span class="contentItems bold">Matière / Type :</span>
+            <span class="contentItems italic">{{item.matter}}</span>
+            <span class="contentItems bold">Etat :</span>
+            <span class="contentItems italic">{{item.statu}}</span>
+            <p class="contentItems bold">Remarques (nombre, année) :</p>
+            <p class="contentItems" *ngIf="item.comment">{{item.comment}}</p>
+            <button ion-button clear item-right color="secondary" *ngIf="item.pictures.length" (click)="showPictures(item.pictures)"><ion-icon name="ios-image-outline" class="photoIcon"></ion-icon></button>
+          </ion-item>
+        </div>
+
+        <div class="containerInfo" *ngIf="lot.consumptions.length > 0">
+          <ion-card-header>
+            Relevé des compteurs {{lot.consumptions}}
+          </ion-card-header>
+          <ion-item *ngFor="let consumption of lot.consumptions">
+            <h3 class="titleItems">{{consumption.name}} (<span [innerHTML]="consumption.metric | safeHtml"></span>): </h3><br>
+            <span class="contentItems bold">Numéro :</span>
+            <span class="contentItems italic">{{consumption.number}}</span>
+            <span class="contentItems bold">Valeur :</span>
+            <span class="contentItems italic">{{consumption.value}}</span>
+          </ion-item>
+        </div>
+      </div>
+
+      <div *ngIf="!lot.main_home">
+        <div class="containerInfo">
+          <ion-card-header>
+            {{lot.lot_type}}
+          </ion-card-header>
+          <div *ngFor="let room of lot.rooms">
+            <ion-item *ngFor="let item of room.items">
+              <h3 class="titleItems">{{item.name}} : </h3><br>
+              <span class="contentItems bold">Matière / Type :</span>
+              <span class="contentItems italic">{{item.matter}}</span>
+              <span class="contentItems bold">Etat :</span>
+              <span class="contentItems italic">{{item.statu}}</span>
+              <p class="contentItems bold">Remarques (nombre, année) :</p>
+              <p class="contentItems" *ngIf="item.comment">{{item.comment}}</p>
+              <button ion-button clear item-right color="secondary" *ngIf="item.pictures.length" (click)="showPictures(item.pictures)"><ion-icon name="ios-image-outline" class="photoIcon"></ion-icon></button>
+            </ion-item>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="containerInfo">
+      <ion-card-header>
+        Remarques générales
+      </ion-card-header>
+      <ion-item>
+        <p class="contentItems"><strong>Remarques :</strong> A l'exception des dégâts mentionnés dans le présent état de lieux, le locataire reconnait
+          avoir reçu les locaux et installations relatifs au contrat de bail en bon état d'entretien et s'engage à les rendre
+          comme tel à son départ. </p>
+      </ion-item>
+    </div>
+
+    <div class="containerInfo">
+      <ion-card-header>
+        Signatures
+      </ion-card-header>
+    </div>
+
+  </ion-list>
+
+
+</ion-content>
