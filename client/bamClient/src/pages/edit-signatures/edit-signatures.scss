@@ -1,0 +1,34 @@
+page-edit-signatures {
+    overflow-y: hidden;
+
+    canvas {
+        height: calc(100% - 95px);
+        width: 100%;
+        display: block;
+        position: absolute;
+        z-index: 100;
+    }
+
+    ion-select {
+        margin: 0 auto;
+    }
+
+    .submitButton {
+        padding: 20px;
+        width: 100%;
+        color: white;
+        background: #69F0AE !important;
+        display: block;
+        margin: 0 auto;
+        margin-bottom: 0px;
+        font-size: 1.5rem;
+        text-transform: uppercase;
+        font-weight: 700;
+        font-family: 'roboto';
+        position: absolute;
+        z-index: 101;
+        bottom: 0px;
+    }
+
+
+}

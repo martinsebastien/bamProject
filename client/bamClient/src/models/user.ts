@@ -33,7 +33,7 @@ export class User {
             form_id,
             code_entrance,
             floor,
-            flat_number,
+            number,
             street_number,
             line,
             role,
@@ -53,10 +53,10 @@ export class User {
         u.reference_number = reference_number;
         u.form_id = form_id;
         u.code_entrance = code_entrance;
-        u. floor = floor;
-        u.flat_number = flat_number;
+        u.floor = floor;
+        u.flat_number = number;
         u.street_number = street_number;
-        u. line = line;
+        u.line = line;
         u.role = role;
         u.npa = npa;
         u.city = city;

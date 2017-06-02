@@ -27,7 +27,7 @@ class FormsController {
         let allState = yield this.requestUsers(2, completed)
 
         yield response
-            .json(allState)
+            .json(allState[0])
             .catch('Something went wrong with indexing the forms')
     }
 
@@ -38,12 +38,12 @@ class FormsController {
         const state = {}
         const _id = parseInt(request.params().id)
         const form = yield Form.find(_id)
-        const contract = yield Contract.find(form.id)
+        const contract = yield Contract.findBy('form_id', _id)
         const genderForm = yield Gender.find(form.gender_id)
         const lots = yield Database
             .raw('select contracts.reference_number, lots.main_home, lots.id, lots.number, lots.floor_id, lots.type_id, types.name as lot_type from lots inner join contracts on contracts.lot_id = lots.id inner join types on types.id = lots.type_id where contracts.form_id = ? group by contracts.reference_number, lots.main_home, lots.id, lots.number, lots.floor_id, lots.type_id, lot_type ', _id)
         const users = yield Database
-            .raw('select users.name as name, users.role_id as role, users.firstname as firstname, users.email as email, users.private_phone as private_phone, users.public_phone as public_phone, users.id from users inner join contracts on contracts.user_id = users.id where contracts.form_id = 1 group by name, role, firstname, email, private_phone, public_phone, users.id')
+            .raw('select users.name as name, users.role_id as role, users.firstname as firstname, users.email as email, users.private_phone as private_phone, users.public_phone as public_phone, users.id from users inner join contracts on contracts.user_id = users.id where contracts.form_id = ? group by name, role, firstname, email, private_phone, public_phone, users.id', _id)
         const mainHome = yield Database
             .raw('select * from lots inner join contracts on contracts.lot_id = lots.id inner join floors on floors.id = lots.floor_id where contracts.form_id = ? and lots.main_home = true limit 1', _id)
 
@@ -118,6 +118,7 @@ class FormsController {
                 .raw('select rooms.name as name, rooms.id as id, rooms.number as number from rooms inner join lots on lots.id = rooms.lot_id where lots.id = ?', lot.id)
 
             for (let i = 0; i < rooms[0].length; i++) {
+                console.log(rooms[0])
                 let room = rooms[0][i]
                 state.lots[n].rooms[i] = {}
                 state.lots[n].rooms[i].items = []
@@ -292,22 +293,9 @@ class FormsController {
 
     requestUsers(role, completed) {
         let base = Database
-            .select('users.name as name', 'users.id', 'users.firstname', 'users.email', 'users.private_phone', 'users.public_phone', 'contracts.form_id', 'floors.number as floor', 'lots.number as flat_number', 'addresses.number as street_number', 'line', 'npa', 'cities.name as city')
-            .from('users')
-            .innerJoin('contracts', 'contracts.user_id', 'users.id')
-            .innerJoin('lots', 'lots.id', 'contracts.lot_id')
-            .innerJoin('floors', 'floors.id', 'lots.floor_id')
-            .innerJoin('buildings', 'buildings.id', 'floors.building_id')
-            .innerJoin('addresses', 'addresses.id', 'buildings.addres_id')
-            .innerJoin('streets', 'streets.id', 'addresses.street_id')
-            .innerJoin('cities', 'cities.id', 'streets.city_id')
-            .innerJoin('forms', 'forms.id', 'contracts.form_id')
-            .where('users.role_id', role)
-            .andWhere('lots.main_home', true)
+            .raw('select users.name, users.firstname, users.id, users.email, users.private_phone, users.public_phone, contracts.form_id, contracts.reference_number, floors.number as floor, lots.number, addresses.number as street_number, addresses.line, streets.name as street, cities.name as city, cities.npa from contracts inner join forms on contracts.form_id = forms.id inner join lots on lots.id = contracts.lot_id inner join floors on floors.id = lots.floor_id inner join buildings on buildings.id = floors.building_id inner join addresses on addresses.id = buildings.addres_id inner join streets on streets.id = addresses.street_id inner join cities on cities.id = streets.city_id inner join users on users.id = contracts.user_id where forms.completed = ? and main_home = true and users.role_id = ? group by users.name, users.firstname, users.id, users.email, users.private_phone, users.public_phone, contracts.form_id, contracts.reference_number, floor, lots.number, street_number, addresses.line, street, city, cities.npa', [completed, role])
 
-        completed !== undefined && base.andWhere('forms.completed', completed)
-
-        return base.groupByRaw('contracts.reference_number, users.id, name, users.firstname, users.email, users.private_phone, users.public_phone, contracts.form_id, floor, flat_number, street_number, line, npa, city')
+        return base
     }
 
 }

@@ -1,47 +1,56 @@
 page-edit-form {
 
-    .containerInfo {
-        width: calc(100% + 12px);
-        margin-left: -6px;
-        margin-bottom: 15px;
-        box-shadow: 0 0 2px rgba(0,0,0,0.2);
-        border-radius: 2px;
-
-        .titleItems {
-            display: inline-block;
-            text-transform: uppercase;
-            color: rgba(0,0,0,0.9);
-            font-weight: 600;
-            font-size: 12px;
-        }
-        .contentItems {
-            font-size: 12px;
-            color: rgba(0,0,0,0.6);
-        }
+    .detailsAddress {
+        font-style: italic;
+        font-size: 0.7em;
     }
 
-    .tenantsBlock {
-        margin: 5px 0 5px 0;
+    .usersContainer {
+        margin-left: 15px;
     }
 
-    ion-card-header {
-        background: rgba(0,0,0,0.05);
-        font-size: 2rem !important;
-        padding: 12px 16px 12px 16px !important;
-        font-family: 'Slabo 27px', sans-serif;
-        color: rgba(0,0,0,0.7) !important;
+    .details {
+        font-size: 0.7em !important;
+        color: rgba(0,0,0,0.5);
     }
 
-    .item-block {
-        min-height: 2.5rem;
+    .bold {
+        color: rgba(0,0,0,0.65);
+    }
 
-        .label {
-            margin: 6px 8px 6px 0;
-        }
+    ion-fab-list {
+        right: 0px;
+    }
+
+    ion-item {
+        padding-left: 0px;
+    }
+
+    .customMenu {
+        background-color: white;
+        width: 100%;
+        display: block;
+        font-size: 11px;
+        font-weight: 600;
+    }
+
+    .searchbar-ios {
+        background: #607D8B;
     }
 
     .item-inner {
-        border: none !important;
+        margin-right: 16px;
+        padding-right: 0px;
+    }
+
+    .address {
+        color: rgba(0,0,0,0.7) !important;
+        margin-top: 3px;
+        margin-bottom: 3px;
+    }
+
+    .secondary {
+        background-color: #69F0AE !important;
     }
 
     .loadingBlock {
@@ -65,25 +74,16 @@ page-edit-form {
         }
     }
 
-    .italic {
-        font-style: italic;
+    .red {
+        color: red !important;
     }
 
-    .bold {
-        color: rgba(0,0,0,0.9) !important;
+    .green {
+        color: limegreen !important;
     }
 
-    .photoIcon {
-        font-size: 2.5rem;
-    }
-
-    .signatureContainer {
-        text-align: center;
-        margin-top: 15px;
-
-        img {
-            max-height: 300px;
-        }
+    ion-item-options .button {
+        padding: 0 1.7em 0 1.7em !important;
     }
 
 }

@@ -19,6 +19,7 @@ import { SearchLotPage } from '../pages/search-lot/search-lot';
 import { CompleteFormPage } from '../pages/complete-form/complete-form';
 import { EditFormPage } from '../pages/edit-form/edit-form';
 import { EditRoomPage } from '../pages/edit-room/edit-room';
+import { EditSignaturesPage } from '../pages/edit-signatures/edit-signatures';
 
 import { FormsProvider } from '../providers/forms/forms';
 import { SafeHtmlPipe } from '../pipes/safe-html/safe-html';
@@ -39,6 +40,7 @@ import { LotsProvider } from '../providers/lots/lots';
     CompleteFormPage,
     EditFormPage,
     EditRoomPage,
+    EditSignaturesPage,
     SafeHtmlPipe,
     SafeUrlPipe,
   ],
@@ -60,6 +62,7 @@ import { LotsProvider } from '../providers/lots/lots';
     CompleteFormPage,
     EditFormPage,
     EditRoomPage,
+    EditSignaturesPage,
   ],
   providers: [
     StatusBar,

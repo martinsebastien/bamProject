@@ -13,7 +13,7 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
 
   <div class="loadingBlock" *ngIf="!form">
     <div>
@@ -25,63 +25,45 @@
 
   <ion-list *ngIf="form">
 
-    <div class="containerInfo">
-      <ion-card-header>
-        Général
-      </ion-card-header>
-      <ion-item>
-        <h3 class="titleItems">Référence de dossier : </h3>
-        <span class="contentItems">{{form.reference_number}}</span>
-      </ion-item>
-      <ion-item>
-        <h3 class="titleItems">Locataires : </h3>
-        <div class="tenantsBlock" *ngFor="let user of form.users">
-          <div *ngIf="user.role == 2">
-            <p class="contentItems bold">{{user.firstname}} {{user.lastname}}</p>
-            <p class="contentItems italic">{{user.private_phone || user.public_phone}}</p>
-            <p class="contentItems">{{user.email}}</p>
-          </div>
+    <ion-item>
+      <h2>Général</h2>
+      <p class="address">Référence de dossier : <span class="details">{{form.reference_number}}</span></p>
+      <p class="address">Locataires : </p>
+      <div class="usersContainer" *ngFor="let user of form.users">
+        <div *ngIf="user.role == 2">
+          <p class="details bold">{{user.lastname}} {{user.firstname}}</p>
+          <p class="detailsAddress">{{user.email}} - {{user.private_phone || user.public_phone}}</p>
         </div>
-      </ion-item>
-      <ion-item *ngIf="form.building.code">
-        <h3 class="titleItems">Code porte d'entrée : </h3>
-        <span class="contentItems">{{form.building.code}}</span>
-      </ion-item>
+      </div>
+      <p class="address">Code porte d'entrée : <span class="details">{{form.building.code}}</span></p>
+      <p class="address">Etage : <span class="details">{{form.floor}}</span></p>
+      <p class="address">Appartement : <span class="details">{{form.flat_number}}</span></p>
+      <p class="address">Nombre de pièces : <span class="details">{{countRooms(form.lots)}}</span></p>
+      <p class="address">Adresse : </p>
+      <div class="usersContainer">
+        <p class="detailsAddress">{{form.building.address.line}}</p>
+        <p class="details">{{form.building.address.street}} {{form.building.address.number}}</p>
+        <p class="details">{{form.building.address.npa}} {{form.building.address.city}}</p>
+      </div>
+    </ion-item>
+
+    <ion-item-sliding>
       <ion-item>
-        <h3 class="titleItems">Etage : </h3>
-        <span class="contentItems">{{form.floor}}</span>
+        <h2>Signatures</h2>
+        <p class="address red" *ngIf="form.signatures.length != 2">Signature(s) manquante(s)</p>
+        <p class="address green" *ngIf="form.signatures.length == form.users.length">Signatures en ordre</p>
       </ion-item>
-      <ion-item>
-        <h3 class="titleItems">Numéro d'appartement : </h3>
-        <span class="contentItems">{{form.flat_number}}</span>
-      </ion-item>
-      <ion-item>
-        <h3 class="titleItems">Nombre de pièces : </h3>
-        <span class="contentItems">{{countRooms(form.lots)}}</span>
-      </ion-item>
-      <ion-item>
-        <h3 class="titleItems">Adresse : </h3>
-        <p class="contentItems">{{form.building.address.line}}</p>
-        <p class="contentItems">{{form.building.address.street}} {{form.building.address.number}}</p>
-        <p class="contentItems">{{form.building.address.npa}} {{form.building.address.city}}</p>
-      </ion-item>
-    </div>
+      <ion-item-options side="right">
+        <button ion-button color="secondary" (click)="showSignaturesPage()"><ion-icon name="ios-create-outline"></ion-icon></button>
+      </ion-item-options>
+    </ion-item-sliding>
 
     <div *ngFor="let lot of form.lots">
       <div *ngIf="lot.main_home">
         <div class="containerInfo" *ngFor="let room of lot.rooms">
-          <ion-card-header>
-            {{room.name}}
-          </ion-card-header>
-          <ion-item *ngFor="let item of room.items">
-            <h3 class="titleItems">{{item.name}} : </h3><br>
-            <span class="contentItems bold">Matière / Type :</span>
-            <span class="contentItems italic">{{item.matter}}</span>
-            <span class="contentItems bold">Etat :</span>
-            <span class="contentItems italic">{{item.statu}}</span>
-            <p class="contentItems bold">Remarques (nombre, année) :</p>
-            <p class="contentItems" *ngIf="item.comment">{{item.comment}}</p>
-            <button ion-button clear item-right color="secondary" *ngIf="item.pictures.length" (click)="showPictures(item.pictures)"><ion-icon name="ios-image-outline" class="photoIcon"></ion-icon></button>
+          <ion-item>
+            <h2 class="titleItems">{{room.name}}</h2>
+            <p class="address">Numéro de pièce : <span class="details">{{room.number}}</span></p>
           </ion-item>
         </div>
 
@@ -101,9 +83,6 @@
 
       <div *ngIf="!lot.main_home">
         <div class="containerInfo">
-          <ion-card-header>
-            {{lot.lot_type}}
-          </ion-card-header>
           <div *ngFor="let room of lot.rooms">
             <ion-item *ngFor="let item of room.items">
               <h3 class="titleItems">{{item.name}} : </h3><br>
@@ -118,23 +97,6 @@
           </div>
         </div>
       </div>
-    </div>
-
-    <div class="containerInfo">
-      <ion-card-header>
-        Remarques générales
-      </ion-card-header>
-      <ion-item>
-        <p class="contentItems"><strong>Remarques :</strong> A l'exception des dégâts mentionnés dans le présent état de lieux, le locataire reconnait
-          avoir reçu les locaux et installations relatifs au contrat de bail en bon état d'entretien et s'engage à les rendre
-          comme tel à son départ. </p>
-      </ion-item>
-    </div>
-
-    <div class="containerInfo">
-      <ion-card-header>
-        Signatures
-      </ion-card-header>
     </div>
 
   </ion-list>

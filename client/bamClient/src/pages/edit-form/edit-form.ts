@@ -4,6 +4,8 @@ import { Subscription } from 'rxjs';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Form } from '../../models/form';
 import { ItemGalleryPage } from '../item-gallery/item-gallery';
+import { EditSignaturesPage } from '../edit-signatures/edit-signatures';
+
 import { FormsProvider } from '../../providers/forms/forms';
 
 @IonicPage()
@@ -62,8 +64,8 @@ export class EditFormPage {
     return role;
   }
 
-  public showPictures(pictures): void {
-      this.navCtrl.push(ItemGalleryPage, pictures);
+  public showSignaturesPage(): void {
+      this.navCtrl.push(EditSignaturesPage);
   }
 
 }

@@ -54,6 +54,7 @@ export class CompleteFormPage {
   }
 
   showForm({ form_id }: User): void {
+    console.log({ form_id });
     this.navCtrl.push(EditFormPage, { form_id });
   }
 
