@@ -1,13 +1,12 @@
 import { Component, ViewChild, Renderer } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Platform } from 'ionic-angular';
+import { AlertController } from 'ionic-angular';
+import { ToastController } from 'ionic-angular';
+import { SignaturesProvider } from '../../providers/signatures/signatures';
+import { Signature } from '../../models/signature';
 
-/**
- * Generated class for the EditSignaturesPage page.
- *
- * See http://ionicframework.com/docs/components/#navigation for more info
- * on Ionic pages and navigation.
- */
+
 @IonicPage()
 @Component({
   selector: 'page-edit-signatures',
@@ -16,19 +15,25 @@ import { Platform } from 'ionic-angular';
 export class EditSignaturesPage {
 
   @ViewChild('myCanvas') canvas: any;
-
   canvasElement: any;
   lastX: number;
   lastY: number;
+  signature: Signature;
+  form: any;
+  user: any;
 
   constructor(
     public navCtrl: NavController,
     public navParams: NavParams,
     public platform: Platform,
     public renderer: Renderer,
+    public alertCtrl: AlertController,
+    public toastCtrl: ToastController,
+    public signatureProvider: SignaturesProvider,
   ) { }
 
   ionViewDidLoad() {
+    this.form = this.navParams.data;
     this.canvasElement = this.canvas.nativeElement;
     let width = this.platform.width();
     let height = this.platform.height() - 95;
@@ -51,7 +56,6 @@ export class EditSignaturesPage {
     ctx.strokeStylec = '#000';
     ctx.lineWidth = '1';
     ctx.stroke();
-
   }
 
   public handleMove(ev) {
@@ -75,6 +79,61 @@ export class EditSignaturesPage {
   }
 
   public confirm() {
-    console.log('Signature validée !');
+    let confirm = this.alertCtrl.create({
+      title: 'Confirmation',
+      message: `Êtes-vous certain des informations remplies ? La signature ne pourra ni être éditée ni supprimée`,
+      buttons: [
+        {
+          text: 'Annuler',
+          handler: () => {
+          }
+        },
+        {
+          text: 'Créer',
+          handler: () => {
+            if (this.user) {
+              let resizedCanvas = document.createElement("canvas");
+              let resizedContext = resizedCanvas.getContext("2d");
+
+              resizedCanvas.height = 100;
+              resizedCanvas.width = 200;
+
+              let context = this.canvasElement.getContext("2d");
+
+              resizedContext.drawImage(this.canvasElement, 0, 0, 300, 300);
+              let myResizedData = resizedCanvas.toDataURL();
+              console.log(this.user)
+              this.signature = Signature.build({ 'user_id': this.user.toString(), 'form_id': this.form.id.toString(), 'image': myResizedData})
+              this.signatureProvider.create(this.signature).subscribe(data => {
+                if (data.error) {
+                  this.presentToast(data.error);
+                } else {
+                  this.presentToast(data.response)
+                }
+              });
+            } else {
+              this.presentToast('Veuiller sélectionner un utilisateur')
+            }
+          }
+        }
+      ]
+    });
+    confirm.present();
   }
+
+  public clearCanvas() {
+    let ctx = this.canvasElement.getContext('2d');
+    console.log(this.canvasElement.toDataURL())
+
+    ctx.clearRect(0, 0, this.canvasElement.width, this.canvasElement.height);
+  }
+
+  public presentToast(text) {
+    let toast = this.toastCtrl.create({
+      message: text,
+      duration: 3000
+    });
+    toast.present();
+  }
+
 }

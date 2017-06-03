@@ -64,8 +64,9 @@ export class EditFormPage {
     return role;
   }
 
-  public showSignaturesPage(): void {
-      this.navCtrl.push(EditSignaturesPage);
+  public showSignaturesPage(form): void {
+    console.log(form);
+      this.navCtrl.push(EditSignaturesPage, form);
   }
 
 }

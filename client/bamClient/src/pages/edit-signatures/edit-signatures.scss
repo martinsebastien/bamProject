@@ -30,5 +30,8 @@ page-edit-signatures {
         bottom: 0px;
     }
 
+    ion-fab[bottom] {
+        bottom: 80px !important;
+    }
 
 }

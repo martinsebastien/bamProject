@@ -85,5 +85,46 @@ page-edit-form {
     ion-item-options .button {
         padding: 0 1.7em 0 1.7em !important;
     }
+    .addButton {
+        padding: 12px;
+        border-radius: 50px;
+        color: white;
+        background: #69F0AE !important;
+        display: block;
+        margin: 0 auto;
+        margin-bottom: 15px;
+
+        .textbutton {
+            font-size: 1.2em;
+            margin-top: -0.6em;
+            display: inline-block;
+            vertical-align: middle;
+            margin-right: 0.6em;
+        }
+
+        ion-icon{
+            font-size: 1.5em;
+        }
+    }
+
+    .submitButton {
+        padding: 20px;
+        width: 100%;
+        color: white;
+        background: #69F0AE !important;
+        display: block;
+        margin: 0 auto;
+        margin-top: 35px;
+        margin-bottom: 0px;
+        font-size: 1.5rem;
+        text-transform: uppercase;
+        font-weight: 700;
+        font-family: 'roboto';
+    }
+
+    .containerBody {
+        min-height: calc(100% - 85px);
+    }
+
 
 }

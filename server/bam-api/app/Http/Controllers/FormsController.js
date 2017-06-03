@@ -51,6 +51,7 @@ class FormsController {
         state.general.reference_number = contract.reference_number
         state.general.date = form.date
         state.general.gender = genderForm.name
+        state.id = form.id
         state.users = users[0]
         state.signatures = []
         state.building = {}
@@ -186,10 +187,7 @@ class FormsController {
                     .json({ 'error': 'Action impossible: Il existe un état des lieux non complété pour un ou plusieurs des lots sélectionnés.' })
                     .catch('Something went wrong')
             }
-            console.log(oldForm.completed)
         }
-
-        console.log(oldFormsUncomplete[0][0])
 
         const firstUser = yield User.find(_users[0].id)
         const firstLot = yield Lot.find(_lots[0].id)

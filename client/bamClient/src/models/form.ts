@@ -6,6 +6,7 @@ import { Building } from './building';
 export class Form {
 
     public reference_number: number;
+    public id: number;
     public date: string;
     public gender: string;
     public users: User[];
@@ -26,6 +27,7 @@ export class Form {
             },
             users = [],
             building,
+            id,
             floor,
             flat_number,
             signatures = [],
@@ -34,6 +36,7 @@ export class Form {
 
         const f = new Form;
         f.json = data;
+        f.id = id;
         f.building = Building.build(building);
         f.reference_number = reference_number;
         f.date = date;

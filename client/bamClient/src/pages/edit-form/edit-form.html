@@ -15,91 +15,99 @@
 
 <ion-content>
 
-  <div class="loadingBlock" *ngIf="!form">
-    <div>
-      <h2>Chargement des données en cours</h2>
-      <p>Ce processus peut prendre quelques secondes ...</p>
-      <ion-spinner></ion-spinner>
+  <div class="containerBody">
+    <div class="loadingBlock" *ngIf="!form">
+      <div>
+        <h2>Chargement des données en cours</h2>
+        <p>Ce processus peut prendre quelques secondes ...</p>
+        <ion-spinner></ion-spinner>
+      </div>
     </div>
-  </div>
 
-  <ion-list *ngIf="form">
+    <ion-list *ngIf="form">
 
-    <ion-item>
-      <h2>Général</h2>
-      <p class="address">Référence de dossier : <span class="details">{{form.reference_number}}</span></p>
-      <p class="address">Locataires : </p>
-      <div class="usersContainer" *ngFor="let user of form.users">
-        <div *ngIf="user.role == 2">
-          <p class="details bold">{{user.lastname}} {{user.firstname}}</p>
-          <p class="detailsAddress">{{user.email}} - {{user.private_phone || user.public_phone}}</p>
-        </div>
-      </div>
-      <p class="address">Code porte d'entrée : <span class="details">{{form.building.code}}</span></p>
-      <p class="address">Etage : <span class="details">{{form.floor}}</span></p>
-      <p class="address">Appartement : <span class="details">{{form.flat_number}}</span></p>
-      <p class="address">Nombre de pièces : <span class="details">{{countRooms(form.lots)}}</span></p>
-      <p class="address">Adresse : </p>
-      <div class="usersContainer">
-        <p class="detailsAddress">{{form.building.address.line}}</p>
-        <p class="details">{{form.building.address.street}} {{form.building.address.number}}</p>
-        <p class="details">{{form.building.address.npa}} {{form.building.address.city}}</p>
-      </div>
-    </ion-item>
-
-    <ion-item-sliding>
       <ion-item>
-        <h2>Signatures</h2>
-        <p class="address red" *ngIf="form.signatures.length != 2">Signature(s) manquante(s)</p>
-        <p class="address green" *ngIf="form.signatures.length == form.users.length">Signatures en ordre</p>
+        <h2>Général</h2>
+        <p class="address">Référence de dossier : <span class="details">{{form.reference_number}}</span></p>
+        <p class="address">Locataires : </p>
+        <div class="usersContainer" *ngFor="let user of form.users">
+          <div *ngIf="user.role == 2">
+            <p class="details bold">{{user.lastname}} {{user.firstname}}</p>
+            <p class="detailsAddress">{{user.email}} - {{user.private_phone || user.public_phone}}</p>
+          </div>
+        </div>
+        <p class="address">Code porte d'entrée : <span class="details">{{form.building.code}}</span></p>
+        <p class="address">Etage : <span class="details">{{form.floor}}</span></p>
+        <p class="address">Appartement : <span class="details">{{form.flat_number}}</span></p>
+        <p class="address">Nombre de pièces : <span class="details">{{countRooms(form.lots)}}</span></p>
+        <p class="address">Adresse : </p>
+        <div class="usersContainer">
+          <p class="detailsAddress">{{form.building.address.line}}</p>
+          <p class="details">{{form.building.address.street}} {{form.building.address.number}}</p>
+          <p class="details">{{form.building.address.npa}} {{form.building.address.city}}</p>
+        </div>
       </ion-item>
-      <ion-item-options side="right">
-        <button ion-button color="secondary" (click)="showSignaturesPage()"><ion-icon name="ios-create-outline"></ion-icon></button>
-      </ion-item-options>
-    </ion-item-sliding>
 
-    <div *ngFor="let lot of form.lots">
-      <div *ngIf="lot.main_home">
-        <div class="containerInfo" *ngFor="let room of lot.rooms">
-          <ion-item>
-            <h2 class="titleItems">{{room.name}}</h2>
-            <p class="address">Numéro de pièce : <span class="details">{{room.number}}</span></p>
-          </ion-item>
-        </div>
+      <ion-item-sliding>
+        <ion-item>
+          <h2>Signatures</h2>
+        </ion-item>
+        <ion-item-options side="right">
+          <button ion-button color="secondary" (click)="showSignaturesPage(form)"><ion-icon name="ios-create-outline"></ion-icon></button>
+        </ion-item-options>
+      </ion-item-sliding>
 
-        <div class="containerInfo" *ngIf="lot.consumptions.length > 0">
-          <ion-card-header>
-            Relevé des compteurs {{lot.consumptions}}
-          </ion-card-header>
-          <ion-item *ngFor="let consumption of lot.consumptions">
-            <h3 class="titleItems">{{consumption.name}} (<span [innerHTML]="consumption.metric | safeHtml"></span>): </h3><br>
-            <span class="contentItems bold">Numéro :</span>
-            <span class="contentItems italic">{{consumption.number}}</span>
-            <span class="contentItems bold">Valeur :</span>
-            <span class="contentItems italic">{{consumption.value}}</span>
-          </ion-item>
-        </div>
-      </div>
+      <div *ngFor="let lot of form.lots">
+        <div *ngIf="lot.main_home">
+          <div class="containerInfo" *ngFor="let room of lot.rooms">
+            <ion-item>
+              <h2 class="titleItems">{{room.name}}</h2>
+              <p class="address">Numéro de pièce : <span class="details">{{room.number}}</span></p>
+            </ion-item>
+          </div>
 
-      <div *ngIf="!lot.main_home">
-        <div class="containerInfo">
-          <div *ngFor="let room of lot.rooms">
-            <ion-item *ngFor="let item of room.items">
-              <h3 class="titleItems">{{item.name}} : </h3><br>
-              <span class="contentItems bold">Matière / Type :</span>
-              <span class="contentItems italic">{{item.matter}}</span>
-              <span class="contentItems bold">Etat :</span>
-              <span class="contentItems italic">{{item.statu}}</span>
-              <p class="contentItems bold">Remarques (nombre, année) :</p>
-              <p class="contentItems" *ngIf="item.comment">{{item.comment}}</p>
-              <button ion-button clear item-right color="secondary" *ngIf="item.pictures.length" (click)="showPictures(item.pictures)"><ion-icon name="ios-image-outline" class="photoIcon"></ion-icon></button>
+          <div class="containerInfo" *ngIf="lot.consumptions.length > 0">
+            <ion-card-header>
+              Relevé des compteurs {{lot.consumptions}}
+            </ion-card-header>
+            <ion-item *ngFor="let consumption of lot.consumptions">
+              <h3 class="titleItems">{{consumption.name}} (<span [innerHTML]="consumption.metric | safeHtml"></span>): </h3><br>
+              <span class="contentItems bold">Numéro :</span>
+              <span class="contentItems italic">{{consumption.number}}</span>
+              <span class="contentItems bold">Valeur :</span>
+              <span class="contentItems italic">{{consumption.value}}</span>
             </ion-item>
           </div>
         </div>
-      </div>
-    </div>
 
-  </ion-list>
+        <div *ngIf="!lot.main_home">
+          <div class="containerInfo">
+            <div *ngFor="let room of lot.rooms">
+              <ion-item *ngFor="let item of room.items">
+                <h3 class="titleItems">{{item.name}} : </h3><br>
+                <span class="contentItems bold">Matière / Type :</span>
+                <span class="contentItems italic">{{item.matter}}</span>
+                <span class="contentItems bold">Etat :</span>
+                <span class="contentItems italic">{{item.statu}}</span>
+                <p class="contentItems bold">Remarques (nombre, année) :</p>
+                <p class="contentItems" *ngIf="item.comment">{{item.comment}}</p>
+                <button ion-button clear item-right color="secondary" *ngIf="item.pictures.length" (click)="showPictures(item.pictures)"><ion-icon name="ios-image-outline" class="photoIcon"></ion-icon></button>
+              </ion-item>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </ion-list>
+
+    <button class="addButton" (click)="createRoom()"><span class="textbutton">Ajouter une salle de séjour</span><ion-icon name="add"></ion-icon></button>
+    <button class="addButton" (click)="createBath()"><span class="textbutton">Ajouter une salle de bains</span><ion-icon name="add"></ion-icon></button>
+    <button class="addButton" (click)="createHall()"><span class="textbutton">Ajouter un hall d'entrée</span><ion-icon name="add"></ion-icon></button>
+    <button class="addButton" (click)="createEnergy()"><span class="textbutton">Ajouter un relevé de compteurs</span><ion-icon name="add"></ion-icon></button>
+  </div>
+
+  <button class="submitButton" (click)="confirm()">Terminer</button>
+
 
 
 </ion-content>

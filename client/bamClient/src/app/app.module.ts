@@ -27,6 +27,7 @@ import { SafeUrlPipe } from '../pipes/safe-url/safe-url';
 import { NewFormProvider } from '../providers/new-form/new-form';
 import { UsersProvider } from '../providers/users/users';
 import { LotsProvider } from '../providers/lots/lots';
+import { SignaturesProvider } from '../providers/signatures/signatures';
 
 @NgModule({
   declarations: [
@@ -74,6 +75,7 @@ import { LotsProvider } from '../providers/lots/lots';
     NewFormProvider,
     UsersProvider,
     LotsProvider,
+    SignaturesProvider,
   ]
 })
 export class AppModule {}
