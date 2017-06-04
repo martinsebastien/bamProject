@@ -16,12 +16,12 @@ export class Room {
             number,
             id,
         } = data;
-        
+
         const r = new Room;
         r.id = id;
         r.name = name;
         r.number = number;
-        r.items = items.map(item => Item.build(item));
+        items.length ? r.items = items.map(item => Item.build(item)) : r;
         return r;
     }
 

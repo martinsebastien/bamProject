@@ -39,7 +39,7 @@
         <p class="address">Code porte d'entrée : <span class="details">{{form.building.code}}</span></p>
         <p class="address">Etage : <span class="details">{{form.floor}}</span></p>
         <p class="address">Appartement : <span class="details">{{form.flat_number}}</span></p>
-        <p class="address">Nombre de pièces : <span class="details">{{countRooms(form.lots)}}</span></p>
+        <p class="address" *ngIf="rooms">Nombre de pièces : <span class="details">{{countRooms(form.lots)}}</span></p>
         <p class="address">Adresse : </p>
         <div class="usersContainer">
           <p class="detailsAddress">{{form.building.address.line}}</p>
@@ -57,52 +57,30 @@
         </ion-item-options>
       </ion-item-sliding>
 
-      <div *ngFor="let lot of form.lots">
-        <div *ngIf="lot.main_home">
-          <div class="containerInfo" *ngFor="let room of lot.rooms">
-            <ion-item>
-              <h2 class="titleItems">{{room.name}}</h2>
-              <p class="address">Numéro de pièce : <span class="details">{{room.number}}</span></p>
-            </ion-item>
-          </div>
+      <div class="containerInfo" *ngIf="rooms.length">
+        <ion-item-sliding *ngFor="let room of rooms">
+          <ion-item>
+            <h2 class="titleItems">{{room.name}}</h2>
+            <p class="address">Numéro de pièce : <span class="details">{{room.number}}</span></p>
+          </ion-item>
+          <ion-item-options side="right">
+            <button ion-button color="primary" (click)="deleteRoom(room.id)">
+              <ion-icon name="ios-trash-outline"></ion-icon>
+            </button>
+            <button ion-button color="secondary" (click)="showEditRoom(room)">
+              <ion-icon name="ios-create-outline"></ion-icon>
+            </button>
+          </ion-item-options>
 
-          <div class="containerInfo" *ngIf="lot.consumptions.length > 0">
-            <ion-card-header>
-              Relevé des compteurs {{lot.consumptions}}
-            </ion-card-header>
-            <ion-item *ngFor="let consumption of lot.consumptions">
-              <h3 class="titleItems">{{consumption.name}} (<span [innerHTML]="consumption.metric | safeHtml"></span>): </h3><br>
-              <span class="contentItems bold">Numéro :</span>
-              <span class="contentItems italic">{{consumption.number}}</span>
-              <span class="contentItems bold">Valeur :</span>
-              <span class="contentItems italic">{{consumption.value}}</span>
-            </ion-item>
-          </div>
-        </div>
-
-        <div *ngIf="!lot.main_home">
-          <div class="containerInfo">
-            <div *ngFor="let room of lot.rooms">
-              <ion-item *ngFor="let item of room.items">
-                <h3 class="titleItems">{{item.name}} : </h3><br>
-                <span class="contentItems bold">Matière / Type :</span>
-                <span class="contentItems italic">{{item.matter}}</span>
-                <span class="contentItems bold">Etat :</span>
-                <span class="contentItems italic">{{item.statu}}</span>
-                <p class="contentItems bold">Remarques (nombre, année) :</p>
-                <p class="contentItems" *ngIf="item.comment">{{item.comment}}</p>
-                <button ion-button clear item-right color="secondary" *ngIf="item.pictures.length" (click)="showPictures(item.pictures)"><ion-icon name="ios-image-outline" class="photoIcon"></ion-icon></button>
-              </ion-item>
-            </div>
-          </div>
-        </div>
+        </ion-item-sliding>
       </div>
 
     </ion-list>
 
-    <button class="addButton" (click)="createRoom()"><span class="textbutton">Ajouter une salle de séjour</span><ion-icon name="add"></ion-icon></button>
-    <button class="addButton" (click)="createBath()"><span class="textbutton">Ajouter une salle de bains</span><ion-icon name="add"></ion-icon></button>
-    <button class="addButton" (click)="createHall()"><span class="textbutton">Ajouter un hall d'entrée</span><ion-icon name="add"></ion-icon></button>
+
+    <button class="addButton" (click)="createRoom('room')"><span class="textbutton">Ajouter une salle de séjour</span><ion-icon name="add"></ion-icon></button>
+    <button class="addButton" (click)="createRoom('bath')"><span class="textbutton">Ajouter une salle de bains</span><ion-icon name="add"></ion-icon></button>
+    <button class="addButton" (click)="createRoom('hall')"><span class="textbutton">Ajouter un hall d'entrée</span><ion-icon name="add"></ion-icon></button>
     <button class="addButton" (click)="createEnergy()"><span class="textbutton">Ajouter un relevé de compteurs</span><ion-icon name="add"></ion-icon></button>
   </div>
 

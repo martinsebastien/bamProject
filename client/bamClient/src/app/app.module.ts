@@ -28,6 +28,7 @@ import { NewFormProvider } from '../providers/new-form/new-form';
 import { UsersProvider } from '../providers/users/users';
 import { LotsProvider } from '../providers/lots/lots';
 import { SignaturesProvider } from '../providers/signatures/signatures';
+import { RoomsProvider } from '../providers/rooms/rooms';
 
 @NgModule({
   declarations: [
@@ -76,6 +77,7 @@ import { SignaturesProvider } from '../providers/signatures/signatures';
     UsersProvider,
     LotsProvider,
     SignaturesProvider,
+    RoomsProvider,
   ]
 })
 export class AppModule {}
