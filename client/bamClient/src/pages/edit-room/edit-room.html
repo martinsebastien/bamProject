@@ -7,12 +7,36 @@
 <ion-header>
 
   <ion-navbar color="primary">
-    <ion-title>EditRoom</ion-title>
+    <ion-title *ngIf="room">{{room.name}} - Pièce numéro {{room.number}} - {{room.id}}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
+  <ion-list *ngIf="items">
+    <div class="containerInfo" *ngIf="itemsProvider.items.length">
+      <ion-item-sliding *ngFor="let item of itemsProvider.items">
+        <ion-item>
+          <h2 class="titleItems">{{item.name}}</h2>
+          <p class="address">Matière : <span class="details">{{item.matter}}</span></p>
+          <p class="address">Nombre : <span class="details">{{item.number}}</span></p>
+          <p class="address">Statu : <span class="details">{{item.statu}}</span></p>
+        </ion-item>
+        <ion-item-options side="right">
+          <button ion-button color="primary" (click)="confirmDeleteItem(item.id)">
+              <ion-icon name="ios-trash-outline"></ion-icon>
+            </button>
+          <button ion-button color="secondary" (click)="showEditItem(item)">
+              <ion-icon name="ios-create-outline"></ion-icon>
+            </button>
+        </ion-item-options>
+
+      </ion-item-sliding>
+    </div>
+
+  </ion-list>
+  <button class="addButton" (click)="createItem(room)"><span class="textbutton">Ajouter un item</span><ion-icon name="add"></ion-icon></button>
+
 
 </ion-content>

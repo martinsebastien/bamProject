@@ -32,5 +32,8 @@ update signatures set form_id = 1 where id = 2;
 
 /*insert into genders (name) values ('Etat des lieux: Sortie');*/
 
+insert into status (name) values ('En ordre');
+insert into status (name) values ('Neuf');
+insert into status (name) values ('A changer');
 
 select * from lots;

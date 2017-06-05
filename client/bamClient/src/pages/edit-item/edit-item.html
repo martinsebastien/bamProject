@@ -1,0 +1,39 @@
+<ion-header>
+
+  <ion-navbar color="primary">
+    <ion-title *ngIf="item">{{item.name}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <form *ngIf="item" (ngSubmit)="submitItem()">
+    <div class="containerBody">
+      <ion-item>
+        <ion-label>Nom : </ion-label>
+        <ion-input type="text" [(ngModel)]="itemChange.name" name="name" placeholder="{{item.name}}"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Matière / Type : </ion-label>
+        <ion-input type="text" [(ngModel)]="itemChange.matter" name="matter" placeholder="{{item.matter}}"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Nombre : </ion-label>
+        <ion-input type="text" [(ngModel)]="itemChange.number" name="number" placeholder="{{item.number}}"></ion-input>
+      </ion-item>
+      <ion-select [(ngModel)]="itemChange.statu" name="statu" interface="popover">
+        <ion-option value="1">Usé</ion-option>
+        <ion-option value="2">En ordre</ion-option>
+        <ion-option value="3">Neuf</ion-option>
+        <ion-option value="4">A remplacer</ion-option>
+      </ion-select>
+      <ion-item>
+        <ion-label>Commentaires : </ion-label>
+        <ion-textarea [(ngModel)]="itemChange.comment" name="comment" placeholder="{{item.comment}}"></ion-textarea>
+      </ion-item>
+    </div>
+    <button ion-button type="submit" class="submitButton">Modifier</button>
+  </form>
+
+</ion-content>

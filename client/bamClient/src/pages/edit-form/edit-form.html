@@ -64,7 +64,7 @@
             <p class="address">Numéro de pièce : <span class="details">{{room.number}}</span></p>
           </ion-item>
           <ion-item-options side="right">
-            <button ion-button color="primary" (click)="deleteRoom(room.id)">
+            <button ion-button color="primary" (click)="confirmDeleteRoom(room.id)">
               <ion-icon name="ios-trash-outline"></ion-icon>
             </button>
             <button ion-button color="secondary" (click)="showEditRoom(room)">
@@ -79,12 +79,15 @@
 
 
     <button class="addButton" (click)="createRoom('room')"><span class="textbutton">Ajouter une salle de séjour</span><ion-icon name="add"></ion-icon></button>
+    <button class="addButton" (click)="createRoom('balcon')"><span class="textbutton">Ajouter un balcon</span><ion-icon name="add"></ion-icon></button>
+    <button class="addButton" (click)="createRoom('kitchen')"><span class="textbutton">Ajouter une cuisine</span><ion-icon name="add"></ion-icon></button>
+    <button class="addButton" (click)="createRoom('bedroom')"><span class="textbutton">Ajouter une chambre</span><ion-icon name="add"></ion-icon></button>
     <button class="addButton" (click)="createRoom('bath')"><span class="textbutton">Ajouter une salle de bains</span><ion-icon name="add"></ion-icon></button>
     <button class="addButton" (click)="createRoom('hall')"><span class="textbutton">Ajouter un hall d'entrée</span><ion-icon name="add"></ion-icon></button>
     <button class="addButton" (click)="createEnergy()"><span class="textbutton">Ajouter un relevé de compteurs</span><ion-icon name="add"></ion-icon></button>
   </div>
 
-  <button class="submitButton" (click)="confirm()">Terminer</button>
+  <button class="submitButton" (click)="validateForm(form)">Terminer</button>
 
 
 

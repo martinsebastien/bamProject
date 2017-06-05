@@ -7,9 +7,13 @@
 </ion-header>
 
 <ion-content>
-  <ion-searchbar (ionInput)="getUsers($event)"></ion-searchbar>
 
-  <div class="loadingBlock" *ngIf="!currentUsers.length">
+  <ion-searchbar (ionInput)="getUsers($event)"></ion-searchbar>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <div class="loadingBlock" *ngIf="!formsProvider.currentUsers.length">
     <div>
       <h2>Chargement des données en cours</h2>
       <p>Ce processus peut prendre quelques secondes ...</p>
@@ -18,9 +22,9 @@
     </div>
   </div>
 
-  <ion-list *ngIf="currentUsers.length">
+  <ion-list *ngIf="formsProvider.currentUsers.length">
 
-    <ion-item-sliding *ngFor="let user of currentUsers">
+    <ion-item-sliding *ngFor="let user of formsProvider.currentUsers">
       <ion-item>
         <h2>{{user.lastname}} {{user.firstname}}</h2>
         <p class="detailsAddress">Etage {{user.floor}} - Appartement {{user.flat_number}}</p>

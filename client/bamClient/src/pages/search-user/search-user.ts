@@ -50,7 +50,6 @@ export class SearchUserPage {
 
   public addUser(user) {
     this.newForm.addUser(user);
-    console.log(this.newForm.getUsers());
     this.navCtrl.pop();
   }
 

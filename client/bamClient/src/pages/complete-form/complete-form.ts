@@ -39,6 +39,7 @@ export class CompleteFormPage {
     this.usersSubscription = this.formsProvider.allNotComplete().subscribe(users => {
       this.users = users;
       this.currentUsers = users;
+      console.log(this.users)
     });
   }
 

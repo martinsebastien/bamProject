@@ -3,9 +3,11 @@ import { Subscription } from 'rxjs';
 
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Form } from '../../models/form';
-import { Room } from '../../models/room';
-import { ItemGalleryPage } from '../item-gallery/item-gallery';
+
 import { EditSignaturesPage } from '../edit-signatures/edit-signatures';
+import { EditRoomPage } from '../edit-room/edit-room';
+import { HomePage } from '../home/home';
+
 import { AlertController } from 'ionic-angular';
 import { ToastController } from 'ionic-angular';
 
@@ -46,8 +48,7 @@ export class EditFormPage {
 
   initializeRooms(id) {
     this.roomsSubscription = this.roomsProvider.getRooms(id).subscribe(rooms => {
-      rooms ? this.rooms = rooms : console.log(rooms)
-      console.log(this.rooms)
+      rooms ? this.rooms = rooms : console.log(rooms);
     })
   }
 
@@ -91,10 +92,36 @@ export class EditFormPage {
     this.confirm(object)
   }
 
+  public validateForm(object) {
+    let confirm = this.alertCtrl.create({
+      title: 'Confirmation',
+      message: `Êtes-vous certain de vouloir valider ce formulaire ? Il sera impossible de le modifier ou supprmier`,
+      buttons: [
+        {
+          text: 'Annuler',
+          handler: () => {
+          }
+        },
+        {
+          text: 'Créer',
+          handler: () => {
+            this.usersSubscription = this.formsProvider.edit(object).subscribe(users => {
+              this.formsProvider.users = users;
+              console.log(this.formsProvider.users)
+              this.navCtrl.popToRoot();
+            })
+          }
+        }
+      ]
+    });
+    confirm.present();
+
+  }
+
   public confirm(object) {
     let confirm = this.alertCtrl.create({
       title: 'Confirmation',
-      message: `Êtes-vous certain des informations remplies ? Le formulaire ne pourra être supprimé en cas d'erreur`,
+      message: `Êtes-vous certain de vouloir créer cette pièce ?`,
       buttons: [
         {
           text: 'Annuler',
@@ -151,8 +178,7 @@ export class EditFormPage {
   }
 
   public showEditRoom(room) {
-    console.log(room)
+    this.navCtrl.push(EditRoomPage, room);
   }
-
 
 }

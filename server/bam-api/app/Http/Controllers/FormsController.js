@@ -25,10 +25,27 @@ class FormsController {
         const bool = request.all().completed
         const completed = bool == 'true' ? true : bool == 'false' ? false : bool
         let allState = yield this.requestUsers(2, completed)
+        console.log(allState)
 
         yield response
             .json(allState[0])
             .catch('Something went wrong with indexing the forms')
+    }
+
+    * update(request, response) {
+        const _id = request.all().id
+
+        const form = yield Form.find(_id)
+        form.completed = true
+        yield form.save()
+        console.log(form)
+
+        let allState = yield this.requestUsers(2, true)
+
+        yield response
+            .json(allState[0])
+            .catch('Something went wrong with indexing the forms')
+
     }
 
     * show(request, response) {
@@ -218,7 +235,7 @@ class FormsController {
             const _id = lots_id[l]
             const lot = yield Lot.find(_id)
 
-            lot.main_home ? existMain = true : existMain;
+            lot.main_home == true ? existMain = true : existMain;
 
             let newLot = yield Lot.create({
                 type_id: lot.type_id,
@@ -226,6 +243,7 @@ class FormsController {
                 main_home: lot.main_home,
                 number: lot.number
             })
+            console.log(newLot.main_home)
 
             newLots.push(newLot)
 
@@ -273,7 +291,10 @@ class FormsController {
             }
         }
 
-        !existMain ? newLots[0].main_home = true : existMain
+         if (existMain == false) {
+             newLots[0].main_home = true
+             yield newLots[0].save()
+         } 
 
         const lots = yield Database
             .raw('select * from lots inner join rooms on rooms.lot_id = lots.id inner join items on items.room_id = rooms.id where lots.id in (?)', lots_id.join(", "))

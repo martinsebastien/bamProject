@@ -15,49 +15,58 @@ import { CompleteFormPage } from '../complete-form/complete-form';
 })
 export class HomePage {
 
-  public users: User[] = [];
-  public currentUsers: User[] = [];
   public searchTerm: string = '';
+  public users: User[] = this.formsProvider.users;
   private usersSubscription: Subscription;
 
   constructor(
     public navCtrl: NavController,
     public formsProvider: FormsProvider,
-    ) {}
+  ) { }
 
-    ionViewWillLoad() {
-      //Load the users
-      this.initializeUsers();
+  ionViewWillLoad() {
+    //Load the users
+    this.initializeUsers();
+  }
+
+  doRefresh(refresher) {
+    this.usersSubscription = this.formsProvider.all().subscribe(users => {
+      this.formsProvider.users = users;
+      this.formsProvider.currentUsers = users;
+      this.users = this.formsProvider.users
+      refresher.complete();
+    });
+  }
+
+  initializeUsers() {
+    this.usersSubscription = this.formsProvider.all().subscribe(users => {
+      this.formsProvider.users = users;
+      this.formsProvider.currentUsers = users;
+      this.users = this.formsProvider.users
+    });
+  }
+
+  getUsers(ev: any) {
+    this.formsProvider.currentUsers = this.formsProvider.users;
+    this.searchTerm = ev.target.value;
+
+    if (this.searchTerm && this.searchTerm.trim() != '') {
+      this.formsProvider.currentUsers = this.formsProvider.currentUsers.filter((user) => {
+        return (user.lastname.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1 || user.firstname.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1)
+      })
     }
+  }
 
-    initializeUsers() {
-      this.usersSubscription = this.formsProvider.all().subscribe(users => {
-        this.users = users; 
-        this.currentUsers = users;
-      });
-    }
+  showForm({ form_id }: User): void {
+    this.navCtrl.push(ShowFormPage, { form_id });
+  }
 
-    getUsers(ev: any) {
-      this.currentUsers = this.users;
-      this.searchTerm = ev.target.value;
+  completeForm(): void {
+    this.navCtrl.push(CompleteFormPage);
+  }
 
-      if (this.searchTerm && this.searchTerm.trim() != '') {
-        this.currentUsers = this.currentUsers.filter((user) => {
-          return (user.lastname.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1 || user.firstname.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1)
-        })
-      }
-    }
-
-    showForm({ form_id }: User): void {
-      this.navCtrl.push(ShowFormPage, { form_id });
-    }
-
-    completeForm(): void {
-      this.navCtrl.push(CompleteFormPage);
-    }
-
-    createNew():void {
-      this.navCtrl.push(NewStatePage);
-    }
+  createNew(): void {
+    this.navCtrl.push(NewStatePage);
+  }
 
 }

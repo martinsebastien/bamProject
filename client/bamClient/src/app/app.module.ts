@@ -20,6 +20,7 @@ import { CompleteFormPage } from '../pages/complete-form/complete-form';
 import { EditFormPage } from '../pages/edit-form/edit-form';
 import { EditRoomPage } from '../pages/edit-room/edit-room';
 import { EditSignaturesPage } from '../pages/edit-signatures/edit-signatures';
+import { EditItemPage } from '../pages/edit-item/edit-item';
 
 import { FormsProvider } from '../providers/forms/forms';
 import { SafeHtmlPipe } from '../pipes/safe-html/safe-html';
@@ -29,6 +30,7 @@ import { UsersProvider } from '../providers/users/users';
 import { LotsProvider } from '../providers/lots/lots';
 import { SignaturesProvider } from '../providers/signatures/signatures';
 import { RoomsProvider } from '../providers/rooms/rooms';
+import { ItemsProvider } from '../providers/items/items';
 
 @NgModule({
   declarations: [
@@ -43,6 +45,7 @@ import { RoomsProvider } from '../providers/rooms/rooms';
     EditFormPage,
     EditRoomPage,
     EditSignaturesPage,
+    EditItemPage,
     SafeHtmlPipe,
     SafeUrlPipe,
   ],
@@ -65,6 +68,7 @@ import { RoomsProvider } from '../providers/rooms/rooms';
     EditFormPage,
     EditRoomPage,
     EditSignaturesPage,
+    EditItemPage,
   ],
   providers: [
     StatusBar,
@@ -78,6 +82,7 @@ import { RoomsProvider } from '../providers/rooms/rooms';
     LotsProvider,
     SignaturesProvider,
     RoomsProvider,
+    ItemsProvider,
   ]
 })
 export class AppModule {}

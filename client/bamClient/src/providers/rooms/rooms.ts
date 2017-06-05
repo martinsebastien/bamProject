@@ -6,17 +6,11 @@ import { HttpService } from '../../services/http.service';
 import { ToastController } from 'ionic-angular';
 import { Room } from '../../models/room';
 
-import { FormsProvider } from '../../providers/forms/forms';
-
 @Injectable()
 export class RoomsProvider {
 
-  private users = [];
-  private lots = [];
-
   constructor(
     public toastCtrl: ToastController,
-    public formsProvider: FormsProvider,
     public httpService: HttpService,
   ) {}
 
