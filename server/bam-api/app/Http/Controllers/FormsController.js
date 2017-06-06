@@ -35,10 +35,18 @@ class FormsController {
     * update(request, response) {
         const _id = request.all().id
 
+        const _signatures = yield Database
+            .raw('select * from signatures where form_id = ?', _id)
+        const signatures = _signatures[0]
+
+        if (signatures.length == 0) {
+            yield response
+                .json({ 'error': 'Vous ne pouvez pas valider un formulaire sans signatures' })
+                .catch('Something went wrong with indexing the floors')
+        }
         const form = yield Form.find(_id)
         form.completed = true
         yield form.save()
-        console.log(form)
 
         let allState = yield this.requestUsers(2, true)
 
@@ -291,10 +299,10 @@ class FormsController {
             }
         }
 
-         if (existMain == false) {
-             newLots[0].main_home = true
-             yield newLots[0].save()
-         } 
+        if (existMain == false) {
+            newLots[0].main_home = true
+            yield newLots[0].save()
+        }
 
         const lots = yield Database
             .raw('select * from lots inner join rooms on rooms.lot_id = lots.id inner join items on items.room_id = rooms.id where lots.id in (?)', lots_id.join(", "))

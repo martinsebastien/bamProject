@@ -83,7 +83,6 @@ export class EditFormPage {
   }
 
   public showSignaturesPage(form): void {
-    console.log(form);
     this.navCtrl.push(EditSignaturesPage, form);
   }
 
@@ -106,9 +105,13 @@ export class EditFormPage {
           text: 'Créer',
           handler: () => {
             this.usersSubscription = this.formsProvider.edit(object).subscribe(users => {
-              this.formsProvider.users = users;
-              console.log(this.formsProvider.users)
-              this.navCtrl.popToRoot();
+              if (users.error) {
+                this.presentToast(users.error)
+              } else {
+                this.formsProvider.users = users;
+                this.navCtrl.popToRoot();
+                this.presentToast('Formulaire complété avec succès ! Tirer pour rafraichir la liste et pouvoir le consulter')
+              }
             })
           }
         }

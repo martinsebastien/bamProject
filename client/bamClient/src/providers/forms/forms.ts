@@ -49,6 +49,9 @@ export class FormsProvider {
       .put(`forms/${id}`, object)
       .map(res => res.json())
       .map(users => {
+        if (users.error) {
+          return users
+        }
         return users.map(user => {
           return User.build(user);
       })
