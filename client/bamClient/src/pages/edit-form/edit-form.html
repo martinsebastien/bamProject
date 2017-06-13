@@ -71,6 +71,24 @@
               <ion-icon name="ios-create-outline"></ion-icon>
             </button>
           </ion-item-options>
+        </ion-item-sliding>
+      </div>
+
+      <div class="containerInfo" *ngIf="energy.length">
+        <ion-item-sliding *ngFor="let consumption of energy">
+          <ion-item>
+            <h2 class="titleItems">{{consumption.name}} {{consumption.metric}}</h2>
+            <p class="address">Nombre : <span class="details">{{consumption.number}}</span></p>
+            <p class="address">Valeur : <span class="details">{{consumption.value}}</span></p>
+          </ion-item>
+          <ion-item-options side="right">
+            <button ion-button color="primary" (click)="confirmDeleteEnergy(consumption.id)">
+              <ion-icon name="ios-trash-outline"></ion-icon>
+            </button>
+            <button ion-button color="secondary" (click)="showEnergyRoom(consumption)">
+              <ion-icon name="ios-create-outline"></ion-icon>
+            </button>
+          </ion-item-options>
 
         </ion-item-sliding>
       </div>

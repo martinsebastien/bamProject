@@ -1,6 +1,6 @@
 <ion-header>
 
-  <ion-navbar>
+  <ion-navbar color="primary">
     <ion-title>Signatures</ion-title>
   </ion-navbar>
 
@@ -10,7 +10,7 @@
   
   <div *ngIf="form">
     <ion-select [(ngModel)]="user" interface="popover">
-      <ion-option *ngFor="let user of form.users" value="{{user.id}}">{{user.name}} {{user.firstname}}</ion-option>
+      <ion-option *ngFor="let user of form.users" value="{{user.id}}">{{user.lastname}} {{user.firstname}}</ion-option>
     </ion-select>
   </div>
 

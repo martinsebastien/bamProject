@@ -1,6 +1,7 @@
 export class Consumption {
 
     public name: string;
+    public id: number;
     public metric: string;
     public number: number;
     public value: number;
@@ -10,6 +11,7 @@ export class Consumption {
 
         const {
             name,
+            id,
             metric,
             number,
             value,
@@ -17,6 +19,7 @@ export class Consumption {
 
         const c = new Consumption;
         c.name = name;
+        c.id = id;
         c.metric = metric;
         c.number = number;
         c.value = value;

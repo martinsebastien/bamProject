@@ -25,7 +25,6 @@ class FormsController {
         const bool = request.all().completed
         const completed = bool == 'true' ? true : bool == 'false' ? false : bool
         let allState = yield this.requestUsers(2, completed)
-        console.log(allState)
 
         yield response
             .json(allState[0])
@@ -125,6 +124,7 @@ class FormsController {
             state.lots[n].floor = floor_lot.number
             state.lots[n].main_home = lot.main_home
             state.lots[n].lot_type = lot.lot_type
+            state.lots[n].id = lot.id
             state.lots[n].rooms = []
 
             state.lots[n].consumptions = []
@@ -144,7 +144,6 @@ class FormsController {
                 .raw('select rooms.name as name, rooms.id as id, rooms.number as number from rooms inner join lots on lots.id = rooms.lot_id where lots.id = ?', lot.id)
 
             for (let i = 0; i < rooms[0].length; i++) {
-                console.log(rooms[0])
                 let room = rooms[0][i]
                 state.lots[n].rooms[i] = {}
                 state.lots[n].rooms[i].items = []
@@ -251,7 +250,6 @@ class FormsController {
                 main_home: lot.main_home,
                 number: lot.number
             })
-            console.log(newLot.main_home)
 
             newLots.push(newLot)
 
@@ -266,7 +264,6 @@ class FormsController {
                 let reference_number = `${firstUser.name.substring(0, 3).toUpperCase()}-${firstBuilding.name.substring(0, 3).toUpperCase()}-${ref_supp}`
                 newContract.reference_number = reference_number
                 yield newContract.save()
-                console.log(newContract.reference_number)
             }
 
             const _rooms = yield Database
